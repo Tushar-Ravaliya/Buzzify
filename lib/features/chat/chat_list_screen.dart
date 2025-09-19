@@ -1,4 +1,5 @@
 import 'package:buzzify/features/chat/chat_detail_screen.dart';
+import 'package:buzzify/features/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import '../../common/constants/app_colors.dart';
 import 'widgets/chat_list_item_widget.dart';
@@ -19,7 +20,14 @@ class ChatListScreen extends StatelessWidget {
         elevation: 0,
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const NotificationScreen(),
+                ),
+              );
+            },
             icon: const Icon(
               Icons.notifications_none_outlined,
               color: AppColors.black,

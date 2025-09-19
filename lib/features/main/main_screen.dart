@@ -1,3 +1,6 @@
+import 'package:buzzify/features/friends/find_friends_screen.dart';
+import 'package:buzzify/features/friends/friends_list_screen.dart';
+import 'package:buzzify/features/profile/profile_screen.dart';
 import 'package:flutter/material.dart';
 import '../../common/widgets/custom_bottom_nav_bar.dart'; // Import the new widget
 import '../chat/chat_list_screen.dart';
@@ -14,9 +17,9 @@ class _MainScreenState extends State<MainScreen> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     ChatListScreen(),
-    Text('Friends Screen'),
-    Text('Find Friends Screen'),
-    Text('Profile Screen'),
+    FriendsListScreen(),
+    FindFriendsScreen(),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
