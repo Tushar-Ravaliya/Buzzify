@@ -10,7 +10,7 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: AppColors.black),
+        // leading: const Icon(Icons.arrow_back, color: AppColors.black),
         title: const Text(
           'Notification',
           style: TextStyle(color: AppColors.black),

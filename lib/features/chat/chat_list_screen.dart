@@ -86,10 +86,8 @@ class ChatListScreen extends StatelessWidget {
                     lastMessage: 'hi',
                     time: 'Just now',
                     unreadCount: 1,
-                    avatarInitial: 'A',
-                    // Add the onTap property here
-                    onTap: () {
-                      // This is where the navigation happens
+                    avatarInitial: 'A',                    
+                    onTap: () {        
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -98,7 +96,7 @@ class ChatListScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  // You can add more items with their own navigation
+                  
                 ],
               ),
             ),

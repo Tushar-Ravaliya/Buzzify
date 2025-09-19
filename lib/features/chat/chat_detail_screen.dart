@@ -1,3 +1,5 @@
+import 'package:buzzify/features/chat/widgets/chat_message_bubble.dart';
+import 'package:buzzify/features/chat/widgets/message_input_field.dart';
 import 'package:flutter/material.dart';
 import '../../common/constants/app_colors.dart'; // Using your existing colors
 
@@ -10,7 +12,7 @@ class ChatDetailScreen extends StatefulWidget {
 
 class _ChatDetailScreenState extends State<ChatDetailScreen> {
   // State to control the visibility of the schedule dialog
-  bool _isScheduleDialogVisible = true;
+  bool _isScheduleDialogVisible = false;
 
   void _toggleScheduleDialog() {
     setState(() {
@@ -32,9 +34,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                   padding: const EdgeInsets.all(16.0),
                   children: const [
                     _TimestampChip(text: 'Just now'),
-                    _ChatMessageBubble(isSender: true, text: 'hi'),
-                    _ChatMessageBubble(isSender: false, text: 'hello'),
-                    _ChatMessageBubble(
+                    ChatMessageBubble(isSender: true, text: 'hi'),
+                    ChatMessageBubble(isSender: false, text: 'hello'),
+                    ChatMessageBubble(
                       isSender: true,
                       text: 'ok fine thank u\nlorem',
                     ),
@@ -42,7 +44,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 ),
               ),
               // Message input field at the bottom
-              _MessageInputField(onScheduleTap: _toggleScheduleDialog),
+              MessageInputField(onScheduleTap: _toggleScheduleDialog),
             ],
           ),
 
@@ -69,7 +71,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     return AppBar(
       backgroundColor: AppColors.white,
       elevation: 0,
-      leading: const Icon(Icons.arrow_back, color: AppColors.black),
+      // leading: const Icon(Icons.arrow_back, color: AppColors.black),
       title: Row(
         children: [
           const CircleAvatar(
@@ -118,57 +120,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   }
 }
 
-// Widget for Chat Bubbles
-class _ChatMessageBubble extends StatelessWidget {
-  final bool isSender;
-  final String text;
-
-  const _ChatMessageBubble({required this.isSender, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: isSender
-          ? MainAxisAlignment.end
-          : MainAxisAlignment.start,
-      children: [
-        Container(
-          constraints: BoxConstraints(
-            maxWidth: MediaQuery.of(context).size.width * 0.7,
-          ),
-          padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
-          margin: const EdgeInsets.symmetric(vertical: 4),
-          decoration: BoxDecoration(
-            color: isSender ? Colors.pink.shade100 : AppColors.lightGrey,
-            borderRadius: BorderRadius.only(
-              topLeft: const Radius.circular(20),
-              topRight: const Radius.circular(20),
-              bottomLeft: isSender ? const Radius.circular(20) : Radius.zero,
-              bottomRight: isSender ? Radius.zero : const Radius.circular(20),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Flexible(
-                child: Text(
-                  text,
-                  style: const TextStyle(fontSize: 16, color: Colors.black),
-                ),
-              ),
-              if (isSender) ...[
-                const SizedBox(width: 8),
-                const Icon(Icons.check, color: AppColors.grey, size: 16),
-              ],
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 // Widget for the Timestamp
 class _TimestampChip extends StatelessWidget {
   final String text;
@@ -178,53 +129,6 @@ class _TimestampChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Chip(label: Text(text), backgroundColor: AppColors.lightGrey),
-    );
-  }
-}
-
-// Widget for the bottom message input bar
-class _MessageInputField extends StatelessWidget {
-  final VoidCallback onScheduleTap;
-  const _MessageInputField({required this.onScheduleTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: AppColors.white,
-      child: Row(
-        children: [
-          IconButton(
-            icon: Icon(Icons.access_time, color: Colors.purple.shade300),
-            onPressed: onScheduleTap,
-            iconSize: 30,
-          ),
-          Expanded(
-            child: TextField(
-              decoration: InputDecoration(
-                hintText: 'Type a message...',
-                filled: true,
-                fillColor: AppColors.white,
-                contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.purple.shade300),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                  borderSide: BorderSide(color: Colors.purple.shade300),
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          IconButton(
-            icon: Icon(Icons.send, color: Colors.purple.shade300),
-            onPressed: () {},
-            iconSize: 30,
-          ),
-        ],
-      ),
     );
   }
 }

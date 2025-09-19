@@ -90,7 +90,15 @@ class FriendsListScreen extends StatelessWidget {
                     child: CustomButton(
                       text: 'View Friend Request',
                       leadingIcon: Icons.person_add_alt_1,
-                      onPressed: () {},
+                      onPressed: () {
+                        // Navigate to the Find Friends screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const FindFriendsScreen(),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ],
