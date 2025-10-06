@@ -12,7 +12,7 @@ class FriendRequestsScreen extends StatefulWidget {
 }
 
 class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
-  // State variable to track the selected tab
+  // State variable to track the selected tab 
   RequestTab _selectedTab = RequestTab.received;
 
   @override

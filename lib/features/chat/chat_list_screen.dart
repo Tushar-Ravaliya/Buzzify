@@ -1,4 +1,5 @@
 import 'package:buzzify/features/chat/chat_detail_screen.dart';
+import 'package:buzzify/features/friends/friends_list_screen.dart';
 import 'package:buzzify/features/notification/notification_screen.dart';
 import 'package:flutter/material.dart';
 import '../../common/constants/app_colors.dart';
@@ -16,6 +17,7 @@ class ChatListScreen extends StatelessWidget {
           style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
+        automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         elevation: 0,
         actions: [
@@ -86,8 +88,8 @@ class ChatListScreen extends StatelessWidget {
                     lastMessage: 'hi',
                     time: 'Just now',
                     unreadCount: 1,
-                    avatarInitial: 'A',                    
-                    onTap: () {        
+                    avatarInitial: 'A',
+                    onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -96,7 +98,6 @@ class ChatListScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  
                 ],
               ),
             ),
@@ -104,10 +105,16 @@ class ChatListScreen extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
+        onPressed: () {
+          // Navigate to the Find Friends screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const FriendsListScreen()),
+          );
+        },
         backgroundColor: AppColors.primary,
         icon: const Icon(Icons.chat, color: AppColors.white),
-        label: const Text('new chat', style: TextStyle(color: AppColors.white)),
+        label: const Text('New chat', style: TextStyle(color: AppColors.white)),
       ),
     );
   }

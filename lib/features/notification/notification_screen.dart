@@ -1,3 +1,4 @@
+import 'package:buzzify/features/friends/friend_requests_screen.dart';
 import 'package:flutter/material.dart';
 import '../../common/constants/app_colors.dart';
 
@@ -28,14 +29,22 @@ class NotificationScreen extends StatelessWidget {
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),
-        children: const [
-          // A single notification item
-          _NotificationItem(
-            title: 'New Friend Request',
-            subtitle: 'you have received new friend request',
-            time: 'just now',
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const FriendRequestsScreen(),
+                ),
+              );
+            },
+            child: const _NotificationItem(
+              title: 'New Friend Request',
+              subtitle: 'you have received new friend request',
+              time: 'just now',
+            ),
           ),
-          // You can add more _NotificationItem widgets here
         ],
       ),
     );

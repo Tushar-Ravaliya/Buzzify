@@ -1,6 +1,7 @@
 import 'package:buzzify/features/chat/widgets/chat_message_bubble.dart';
 import 'package:buzzify/features/chat/widgets/message_input_field.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../common/constants/app_colors.dart'; // Using your existing colors
 
 class ChatDetailScreen extends StatefulWidget {
@@ -18,6 +19,20 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     setState(() {
       _isScheduleDialogVisible = !_isScheduleDialogVisible;
     });
+  }
+
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    // Pick an image
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+
+    if (image != null) {
+      // You can now use the image file
+      print('Image picked: ${image.path}');
+      // TODO: Add logic to upload the wallpaper
+    } else {
+      print('No image selected.');
+    }
   }
 
   @override
@@ -99,22 +114,28 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
         ],
       ),
       actions: [
-        TextButton.icon(
-          icon: const Icon(Icons.image_outlined, color: AppColors.grey),
-          label: const Text(
-            'Upload Wallpaper',
-            style: TextStyle(color: AppColors.grey),
-          ),
-          style: TextButton.styleFrom(
-            backgroundColor: AppColors.lightGrey,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+        PopupMenuButton<String>(
+          icon: const Icon(Icons.more_vert, color: AppColors.black),
+          onSelected: (value) {
+            // This is where you handle the action for each menu item
+            if (value == 'upload_wallpaper') {
+              _pickImage();
+            }
+          },
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            const PopupMenuItem<String>(
+              value: 'upload_wallpaper',
+              child: Row(
+                children: [
+                  Icon(Icons.image_outlined, color: AppColors.grey),
+                  SizedBox(width: 8),
+                  Text('Upload Wallpaper'),
+                ],
+              ),
             ),
-          ),
-          onPressed: () {},
+            // You can add more PopupMenuItem widgets here for other options
+          ],
         ),
-        const Icon(Icons.more_vert, color: AppColors.black),
-        const SizedBox(width: 8),
       ],
     );
   }
