@@ -24,97 +24,106 @@ class ForgotPasswordScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 20),
+          // 1. Wrap your Column with SingleChildScrollView
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 20),
 
-              // Title
-              const Text(
-                'Forgot Password',
-                style: TextStyle(
-                  fontSize: 28,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.black,
-                ),
-              ),
-              const SizedBox(height: 8),
-
-              // Subtitle
-              const Text(
-                'Enter your email to receive a password reset link',
-                style: TextStyle(fontSize: 16, color: AppColors.grey),
-              ),
-              const SizedBox(height: 60),
-
-              // Reset Icon
-              Center(
-                child: Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.1),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(
-                    Icons.lock_reset,
-                    color: AppColors.primary,
-                    size: 40,
+                // Title
+                const Text(
+                  'Forgot Password',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.black,
                   ),
                 ),
-              ),
-              const SizedBox(height: 60),
+                const SizedBox(height: 8),
 
-              // Email Field
-              const CustomTextField(
-                hintText: 'Email Address',
-                prefixIcon: AppIcons.email,
-              ),
-              const SizedBox(height: 40),
+                // Subtitle
+                const Text(
+                  'Enter your email to receive a password reset link',
+                  style: TextStyle(fontSize: 16, color: AppColors.grey),
+                ),
+                const SizedBox(height: 60),
 
-              // Send Reset Link Button
-              CustomButton(
-                text: 'Send Reset Link',
-                leadingIcon: Icons.send,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          const ResetConfirmationScreen(email: "hello"),
+                // Reset Icon
+                Center(
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withOpacity(0.1),
+                      shape: BoxShape.circle,
                     ),
-                  );
-                },
-              ),
-              const Spacer(), // Pushes the next widget to the bottom
-              // "Remember your password?"
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "Remember your password?",
-                    style: TextStyle(color: AppColors.grey),
+                    child: const Icon(
+                      Icons.lock_reset,
+                      color: AppColors.primary,
+                      size: 40,
+                    ),
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignupScreen(),
+                ),
+                const SizedBox(height: 60),
+
+                // Email Field
+                const CustomTextField(
+                  hintText: 'Email Address',
+                  prefixIcon: AppIcons.email,
+                ),
+                const SizedBox(height: 40),
+
+                // Send Reset Link Button
+                CustomButton(
+                  text: 'Send Reset Link',
+                  leadingIcon: Icons.send,
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            const ResetConfirmationScreen(email: "hello"),
+                      ),
+                    );
+                  },
+                ),
+
+                // 2. Remove the Spacer widget.
+                // const Spacer(),
+
+                // Add some space manually if needed
+                const SizedBox(height: 40),
+
+                // "Remember your password?"
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Remember your password?",
+                      style: TextStyle(color: AppColors.grey),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SignupScreen(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        'Sign In',
+                        style: TextStyle(
+                          color: AppColors.primary,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    },
-                    child: const Text(
-                      'Sign In',
-                      style: TextStyle(
-                        color: AppColors.primary,
-                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20),
-            ],
+                  ],
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

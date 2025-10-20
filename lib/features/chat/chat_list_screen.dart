@@ -106,7 +106,6 @@ class ChatListScreen extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          // Navigate to the Find Friends screen
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => const FriendsListScreen()),

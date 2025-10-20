@@ -12,7 +12,7 @@ class FriendRequestsScreen extends StatefulWidget {
 }
 
 class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
-  // State variable to track the selected tab 
+  // State variable to track the selected tab
   RequestTab _selectedTab = RequestTab.received;
 
   @override
@@ -21,7 +21,7 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: const Icon(Icons.arrow_back, color: AppColors.black),
+        // leading: const Icon(Icons.arrow_back, color: AppColors.black),
         title: const Text(
           'Friend Requests',
           style: TextStyle(color: AppColors.black),
@@ -96,7 +96,7 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
             )
           : TextButton.icon(
               onPressed: onTap,
-              icon: const Icon(Icons.send_outlined, color: AppColors.grey),
+              icon: Icon(icon, color: AppColors.grey),
               label: Text(title, style: const TextStyle(color: AppColors.grey)),
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 12),

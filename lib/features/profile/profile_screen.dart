@@ -1,3 +1,4 @@
+import 'package:buzzify/features/auth/signin_screen.dart';
 import 'package:buzzify/features/profile/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import '../../common/constants/app_colors.dart';
@@ -58,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
               ),
               const SizedBox(height: 4),
               const Text(
-                'Joined Jul 2025',
+                'Joined Jul 2020',
                 style: TextStyle(color: AppColors.grey),
               ),
               const SizedBox(height: 24),
@@ -85,7 +86,14 @@ class ProfileScreen extends StatelessWidget {
               _ProfileMenuItem(
                 icon: Icons.logout,
                 title: 'Sign Out',
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
+                },
               ),
               const Divider(),
               _ProfileMenuItem(

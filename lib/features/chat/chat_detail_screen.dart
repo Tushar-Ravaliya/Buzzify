@@ -29,7 +29,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
     if (image != null) {
       // You can now use the image file
       print('Image picked: ${image.path}');
-      // TODO: Add logic to upload the wallpaper
     } else {
       print('No image selected.');
     }
@@ -133,7 +132,6 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                 ],
               ),
             ),
-            // You can add more PopupMenuItem widgets here for other options
           ],
         ),
       ],
