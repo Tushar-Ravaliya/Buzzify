@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:buzzify/model/user_model.dart';
+import 'package:buzzify/service/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -24,7 +23,7 @@ class AuthService {
       User? user = result.user;
       if (user != null) {
         await _firestoreService.updateUserOnlineStatus(user.uid, true);
-        return await _firestoreService.getUserById(user.uid);
+        return await _firestoreService.getUser(user.uid);
       }else {
         throw Exception('User sign-in failed');
       }
@@ -34,7 +33,7 @@ class AuthService {
       throw Exception('Error signing in: $e');  
     }
   }
-  Future<UserModel> registerWithEmailAndPassword(
+  Future<UserModel?> registerWithEmailAndPassword(
     String email,
     String password,
     String displayName,
@@ -76,7 +75,7 @@ Future<void> sendPasswordResetEmail(String email) async {
   Future<void> signOut() async {
     try {
       if (currentUser != null) {
-        await _firestoreService.updateUserOnlineStatus(currentUser!, false);
+        await _firestoreService.updateUserOnlineStatus(currentUserId!, false);
       }
       await _auth.signOut();
     } catch (e) {

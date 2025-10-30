@@ -1,14 +1,35 @@
+import 'package:buzzify/common/theme/app_theme.dart';
+import 'package:buzzify/controller/auth_controller.dart';
 import 'package:buzzify/features/auth/forgot_password_screen.dart';
 import 'package:buzzify/features/auth/signup_screen.dart';
-import 'package:buzzify/features/main/main_screen.dart';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/widgets/custom_button.dart';
 import '../../common/widgets/custom_text_field.dart';
 
-class SigninScreen extends StatelessWidget {
+class SigninScreen extends StatefulWidget {
   const SigninScreen({super.key});
+
+  @override
+  State<SigninScreen> createState() => _SigninScreenState();
+}
+
+class _SigninScreenState extends State<SigninScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final AuthController _authController = Get.find<AuthController>();
+  bool _obsecurePassword = true;
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +45,7 @@ class SigninScreen extends StatelessWidget {
               constraints: BoxConstraints(
                 minHeight:
                     MediaQuery.of(context).size.height -
-                    MediaQuery.of(context).padding.top - 
+                    MediaQuery.of(context).padding.top -
                     kToolbarHeight,
               ),
               child: Column(
@@ -32,42 +53,78 @@ class SigninScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   // Chat Icon
-                  const Icon(
-                    Icons
-                        .chat_bubble_outline, 
-                    size: 80,
-                    color: AppColors.black,
-                  ),
+                  Image.asset(AppIcons.gemini, height: 150, width: 150),
                   const SizedBox(height: 20),
 
                   // Welcome Text
-                  const Text(
+                  Text(
                     'Welcome back!',
-                    style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+                    style: Theme.of(context).textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 8),
-                  const Text(
+                  Text(
                     'Sign in to continue chatting with your friends',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: AppColors.grey),
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      color: AppTheme.textSecondaryColor,
+                    ),
                   ),
                   const SizedBox(height: 40),
 
-                  // Email Field
-                  const CustomTextField(
-                    hintText: 'Email',
-                    prefixIcon: AppIcons.email,
-                  ),
-                  const SizedBox(height: 20),
+                  Form(
+                    key: _formKey,
+                    child: Column(
+                      children: [
+                        // Email Field
+                        CustomTextField(
+                          controller: _emailController,
+                          hintText: 'Email',
+                          prefixIcon: AppIcons.email,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your email';
+                            }
+                            // Simple email validation
+                            if (!RegExp(
+                              r'^[^@]+@[^@]+\.[^@]+',
+                            ).hasMatch(value)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 20),
 
-                  // Password Field
-                  const CustomTextField(
-                    hintText: 'Password',
-                    prefixIcon: AppIcons.password,
-                    obscureText: true,
-                    suffixIcon: Icon(
-                      AppIcons.visibility,
-                      color: AppColors.grey,
+                        // Password Field
+                        CustomTextField(
+                          controller: _passwordController,
+                          hintText: 'Password',
+                          prefixIcon: AppIcons.password,
+                          obscureText: _obsecurePassword,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Please enter your password';
+                            }
+                            if (value.length < 6) {
+                              return 'Password must be at least 6 characters';
+                            }
+                            return null;
+                          },
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obsecurePassword
+                                  ? AppIcons.visibility
+                                  : AppIcons.visibilityOff,
+                              color: AppColors.grey,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obsecurePassword = !_obsecurePassword;
+                              });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(height: 20),
@@ -94,16 +151,22 @@ class SigninScreen extends StatelessWidget {
                   const SizedBox(height: 20),
 
                   // Sign In Button
-                  CustomButton(
-                    text: 'Sign In',
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const MainScreen(),
-                        ),
-                      );
-                    },
+                  Obx(
+                    () => CustomButton(
+                      text: _authController.isLoading
+                          ? 'Signing In...'
+                          : 'Sign In',
+                      onPressed: _authController.isLoading
+                          ? () {} // Empty function when loading
+                          : () {
+                              if (_formKey.currentState?.validate() ?? false) {
+                                _authController.signInWithEmailAndPassword(
+                                  _emailController.text,
+                                  _passwordController.text,
+                                );
+                              }
+                            },
+                    ),
                   ),
                   const SizedBox(height: 30),
 
