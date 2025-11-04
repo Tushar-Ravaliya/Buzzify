@@ -44,21 +44,29 @@ class FirestoreService {
       throw Exception('Error updating online status: $e');
     }
   }
-  Future<UserModel?> deleteUser(String userId) async {
+
+  Future<void> deleteUser(String userId) async {
     try {
-      DocumentSnapshot doc = await _firestore
-          .collection('users')
-          .doc(userId)
-          .get();
+      await _firestore.collection('users').doc(userId).delete();
+    } catch (e) {
+      throw Exception('Error deleting user: $e');
+    }
+  }
+
+  Stream<UserModel?> fetUserStream(String userId) {
+    return _firestore.collection('users').doc(userId).snapshots().map((doc) {
       if (doc.exists) {
-        UserModel user = UserModel.fromMap(doc.data() as Map<String, dynamic>);
-        await _firestore.collection('users').doc(userId).delete();
-        return user;
+        return UserModel.fromMap(doc.data() as Map<String, dynamic>);
       } else {
         return null;
       }
+    });
+  }
+  Future<void> updateUserProfile(UserModel user) async {
+    try {
+      await _firestore.collection('users').doc(user.id).update(user.toMap());
     } catch (e) {
-      throw Exception('Error deleting user: $e');
+      throw Exception('Error updating user profile: $e');
     }
   }
 }
