@@ -25,7 +25,7 @@ class FindFriendListItemWidget extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(color: AppColors.grey.withOpacity(0.5)),
+        border: Border.all(color: AppColors.grey.withValues(alpha: 0.5)),
       ),
       child: Row(
         children: [
@@ -106,7 +106,7 @@ class FindFriendListItemWidget extends StatelessWidget {
             ),
           ],
         );
-      case FriendStatus.none:
+      // case FriendStatus.none:
       default:
         return ElevatedButton.icon(
           onPressed: () {},

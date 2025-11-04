@@ -66,7 +66,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           if (_isScheduleDialogVisible)
             Positioned.fill(
               child: Container(
-                color: Colors.black.withOpacity(0.4),
+                color: Colors.black.withValues(alpha: 0.4),
                 child: Center(
                   child: _ScheduleMessageDialog(
                     onCancel: _toggleScheduleDialog,

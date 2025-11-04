@@ -29,7 +29,7 @@ class ChatListItemWidget extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 12.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
-          border: Border.all(color: AppColors.grey.withOpacity(0.5)),
+          border: Border.all(color: AppColors.grey.withValues(alpha: 0.5)),
         ),
         child: ListTile(
           leading: CircleAvatar(

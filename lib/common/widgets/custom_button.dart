@@ -1,3 +1,4 @@
+import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
@@ -20,7 +21,7 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primary,
+          backgroundColor: AppTheme.primaryColor,
           padding: const EdgeInsets.symmetric(vertical: 16.0),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12.0),

@@ -126,7 +126,7 @@ class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
           padding: const EdgeInsets.all(24),
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: AppColors.primary.withOpacity(0.1),
+            color: AppColors.primary.withValues(alpha: 0.1),
           ),
           child: const Icon(
             Icons.send_outlined,
@@ -164,7 +164,7 @@ class _FriendRequestItem extends StatelessWidget {
         borderRadius: BorderRadius.circular(16.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey.withValues(alpha: 0.1),
             spreadRadius: 2,
             blurRadius: 10,
           ),

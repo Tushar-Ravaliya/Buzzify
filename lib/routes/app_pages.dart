@@ -1,15 +1,26 @@
+import 'package:buzzify/controller/profile_controller.dart';
+import 'package:buzzify/features/auth/forgot_password_screen.dart';
 import 'package:buzzify/features/auth/signin_screen.dart';
+import 'package:buzzify/features/auth/signup_screen.dart';
+import 'package:buzzify/features/chat/chat_list_screen.dart';
+import 'package:buzzify/features/profile/profile_screen.dart';
 import 'package:buzzify/routes/app_routes.dart';
-import 'package:get/route_manager.dart';
-
+import 'package:get/get.dart';
 
 class AppPages {
-  static const initial = AppRoutes.login;
+  static const initial = AppRoutes.signin;
 
   static final routes = [
-    // GetPage(name: AppRoutes.splash, page: () => const SplashView()),
-    GetPage(name: AppRoutes.login, page: () => const SigninScreen()),
-    // GetPage(name: AppRoutes.register, page: () => const RegisterView(),
+    GetPage(name: AppRoutes.signin, page: () => const SigninScreen()),
+    GetPage(name: AppRoutes.signup, page: () => const SignupScreen()),
+    // Home/Main routes
+    GetPage(name: AppRoutes.home, page: () => const ChatListScreen()),
+    GetPage(name: AppRoutes.main, page: () => const ChatListScreen()),
+    // Forgot Password
+    GetPage(
+      name: AppRoutes.forgotPassword,
+      page: () => const ForgotPasswordScreen(), 
+    ),
     // binding: BindingsBuilder(() {
     //   Get.put(RegisterController());
     // }),
@@ -27,13 +38,13 @@ class AppPages {
     //     Get.put(MainController());
     //   }),
     // ),
-    // GetPage(
-    //   name: AppRoutes.profile,
-    //   page: () => const ProfileView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.put(ProfileController());
-    //   }),
-    // ),
+    GetPage(
+      name: AppRoutes.profile,
+      page: () => const ProfileScreen(),
+      binding: BindingsBuilder(() {
+        Get.put(ProfileController());
+      }),
+    ),
     // GetPage(
     //   name: AppRoutes.chat,
     //   page: () => const ChatView(),
