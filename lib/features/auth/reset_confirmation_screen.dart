@@ -1,13 +1,17 @@
-import 'package:buzzify/features/auth/signin_screen.dart';
+import 'package:buzzify/controller/forgot_password_controller.dart';
+import 'package:buzzify/routes/app_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../common/constants/app_colors.dart';
 import '../../common/widgets/custom_button.dart';
 
 class ResetConfirmationScreen extends StatelessWidget {
   // Pass the user's email to display it on the screen
   final String email;
+  final ForgotPasswordController controller =
+      Get.find<ForgotPasswordController>();
 
-  const ResetConfirmationScreen({super.key, required this.email});
+  ResetConfirmationScreen({super.key, required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +89,7 @@ class ResetConfirmationScreen extends StatelessWidget {
                     style: TextStyle(fontSize: 16, color: AppColors.black),
                   ),
                   onPressed: () {
-                    // Handle resend email logic
+                    controller.sendPasswordResetEmail();
                   },
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -104,12 +108,7 @@ class ResetConfirmationScreen extends StatelessWidget {
                 text: 'Back To Sign In',
                 leadingIcon: Icons.arrow_back,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SigninScreen(),
-                    ),
-                  );
+                  Get.toNamed(AppRoutes.signin);
                 },
               ),
               const Spacer(),
@@ -121,14 +120,18 @@ class ResetConfirmationScreen extends StatelessWidget {
                   color: AppColors.lightGrey,
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                child: Wrap(
+                  alignment: WrapAlignment.center,
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 8.0,
+                  runSpacing: 4.0,
+
                   children: [
                     Icon(Icons.info_outline, color: AppColors.grey, size: 20),
-                    SizedBox(width: 8),
                     Text(
                       "Didn't receive the email? Check spam folder",
                       style: TextStyle(color: AppColors.grey),
+                      textAlign: TextAlign.center,
                     ),
                   ],
                 ),

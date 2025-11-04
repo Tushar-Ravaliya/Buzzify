@@ -1,7 +1,6 @@
 import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:buzzify/controller/auth_controller.dart';
-import 'package:buzzify/features/auth/forgot_password_screen.dart';
-import 'package:buzzify/features/auth/signup_screen.dart';
+import 'package:buzzify/routes/app_routes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +21,7 @@ class _SigninScreenState extends State<SigninScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final AuthController _authController = Get.find<AuthController>();
-  bool _obsecurePassword = true;
+  bool _obscurePassword = true;
 
   @override
   void dispose() {
@@ -100,7 +99,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           controller: _passwordController,
                           hintText: 'Password',
                           prefixIcon: AppIcons.password,
-                          obscureText: _obsecurePassword,
+                          obscureText: _obscurePassword,
                           validator: (value) {
                             if (value == null || value.isEmpty) {
                               return 'Please enter your password';
@@ -112,14 +111,14 @@ class _SigninScreenState extends State<SigninScreen> {
                           },
                           suffixIcon: IconButton(
                             icon: Icon(
-                              _obsecurePassword
+                              _obscurePassword
                                   ? AppIcons.visibility
                                   : AppIcons.visibilityOff,
                               color: AppColors.grey,
                             ),
                             onPressed: () {
                               setState(() {
-                                _obsecurePassword = !_obsecurePassword;
+                                _obscurePassword = !_obscurePassword;
                               });
                             },
                           ),
@@ -135,12 +134,7 @@ class _SigninScreenState extends State<SigninScreen> {
                     child: TextButton(
                       onPressed: () {
                         // Navigate to Forgot Password screen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ForgotPasswordScreen(),
-                          ),
-                        );
+                        Get.toNamed(AppRoutes.forgotPassword);
                       },
                       child: const Text(
                         'Forgot Password?',
@@ -157,7 +151,7 @@ class _SigninScreenState extends State<SigninScreen> {
                           ? 'Signing In...'
                           : 'Sign In',
                       onPressed: _authController.isLoading
-                          ? () {} // Empty function when loading
+                          ? () {} 
                           : () {
                               if (_formKey.currentState?.validate() ?? false) {
                                 _authController.signInWithEmailAndPassword(
@@ -191,24 +185,16 @@ class _SigninScreenState extends State<SigninScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text("Don't have an account?"),
-                      TextButton(
-                        onPressed: () {
-                          // Navigate to Sign Up screen
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignupScreen(),
-                            ),
-                          );
-                        },
-                        child: const Text(
-                          'Sign Up',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                      GestureDetector(
+                    onTap: () => Get.toNamed(AppRoutes.signup),
+                    child: Text(
+                      ' Sign In',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        color: AppTheme.primaryColor,
+                        fontWeight: FontWeight.w600,
                       ),
+                    ),
+                  ),
                     ],
                   ),
                 ],

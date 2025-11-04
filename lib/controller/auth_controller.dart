@@ -26,7 +26,7 @@ class AuthController extends GetxController {
 
   Future<void> _handleAuthStateChanged(User? user) async {
     if (user != null) {
-      if (Get.currentRoute != AppRoutes.login) {
+      if (Get.currentRoute != AppRoutes.signin) {
         Get.offAllNamed(AppRoutes.home);
       }
     } else {
@@ -45,7 +45,7 @@ class AuthController extends GetxController {
       _user.value = currentUser;
       Get.offAllNamed(AppRoutes.main);
     } else {
-      Get.offAllNamed(AppRoutes.login);
+      Get.offAllNamed(AppRoutes.signin);
     }
     _isinitialized.value = true;
   }
@@ -60,7 +60,7 @@ class AuthController extends GetxController {
           await _authService.signInWithEmailAndPassword(email, password);
       if (userModel != null) {
         _userModel.value = userModel;
-        Get.offAllNamed(AppRoutes.main);
+        Get.offAllNamed(AppRoutes.profile);
       }
     } catch (e) {
       _error.value = e.toString();
@@ -97,7 +97,7 @@ class AuthController extends GetxController {
     try {
       await _authService.signOut();
       _userModel.value = null;
-      Get.offAllNamed(AppRoutes.login);
+      Get.offAllNamed(AppRoutes.signin);
     } catch (e) {
       _error.value = e.toString();
       Get.snackbar('Sign Out Error', _error.value);
@@ -112,7 +112,7 @@ class AuthController extends GetxController {
       if (_userModel.value != null) {
         await _authService.deleteAccount();
         _userModel.value = null;
-        Get.offAllNamed(AppRoutes.login);
+        Get.offAllNamed(AppRoutes.signin);
       }
     } catch (e) {
       _error.value = e.toString();

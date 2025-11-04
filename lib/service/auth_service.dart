@@ -24,15 +24,15 @@ class AuthService {
       if (user != null) {
         await _firestoreService.updateUserOnlineStatus(user.uid, true);
         return await _firestoreService.getUser(user.uid);
-      }else {
+      } else {
         throw Exception('User sign-in failed');
       }
-
-      
     } catch (e) {
-      throw Exception('Error signing in: $e');  
+      print('Error in signInWithEmailAndPassword: $e');
+      throw Exception('Error signing in: $e');
     }
   }
+
   Future<UserModel?> registerWithEmailAndPassword(
     String email,
     String password,
@@ -61,14 +61,15 @@ class AuthService {
         throw Exception('User registration failed');
       }
     } catch (e) {
-      throw Exception('Error registering user: $e');  
+      throw Exception('Error registering user: $e');
     }
   }
-Future<void> sendPasswordResetEmail(String email) async {
+
+  Future<void> sendPasswordResetEmail(String email) async {
     try {
       await _auth.sendPasswordResetEmail(email: email);
     } catch (e) {
-      throw Exception('Error sending password reset email: $e');  
+      throw Exception('Error sending password reset email: $e');
     }
   }
 
@@ -79,9 +80,10 @@ Future<void> sendPasswordResetEmail(String email) async {
       }
       await _auth.signOut();
     } catch (e) {
-      throw Exception('Error signing out: $e');  
+      throw Exception('Error signing out: $e');
     }
   }
+
   Future<void> deleteAccount() async {
     try {
       User? user = _auth.currentUser;
@@ -92,8 +94,7 @@ Future<void> sendPasswordResetEmail(String email) async {
         throw Exception('No user is currently signed in');
       }
     } catch (e) {
-      throw Exception('Error deleting account: $e');  
+      throw Exception('Error deleting account: $e');
     }
   }
 }
- 
