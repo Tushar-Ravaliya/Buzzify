@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserModel {
   final String id;
   final String email;
@@ -23,19 +25,27 @@ class UserModel {
       'displayName': displayName,
       'photoUrl': photoUrl,
       'isOnline': isOnline,
-      'lastSeen': lastSeen,
-      'createdAt': createdAt,
+      // Store as milliseconds to avoid Timestamp/int mismatch
+      'lastSeen': lastSeen.millisecondsSinceEpoch,
+      'createdAt': createdAt.millisecondsSinceEpoch,
     };
   }
   static UserModel fromMap(Map<String, dynamic> map) {
+    int _toMillis(dynamic value) {
+      if (value == null) return 0;
+      if (value is int) return value;
+      if (value is Timestamp) return value.millisecondsSinceEpoch;
+      if (value is DateTime) return value.millisecondsSinceEpoch;
+      return 0;
+    }
     return UserModel(
       id: map['id'] ?? "",
       email: map['email'] ?? "",
       displayName: map['displayName'] ?? "",
       photoUrl: map['photoUrl'] ?? "",
       isOnline: map['isOnline'] ?? false,
-      lastSeen: DateTime.fromMillisecondsSinceEpoch(  map['lastSeen'] ?? 0),
-      createdAt: DateTime.fromMillisecondsSinceEpoch( map['createdAt'] ?? 0)
+      lastSeen: DateTime.fromMillisecondsSinceEpoch(_toMillis(map['lastSeen'])),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(_toMillis(map['createdAt']))
     );
   }
   UserModel copyWith({
