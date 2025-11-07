@@ -1,7 +1,5 @@
 import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:buzzify/controller/profile_controller.dart';
-import 'package:buzzify/features/auth/signin_screen.dart';
-import 'package:buzzify/features/profile/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../common/constants/app_colors.dart';
@@ -60,158 +58,162 @@ class ProfileScreen extends GetView<ProfileController> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text(
-                  'Dear Programmer',
-                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                Text(
+                  user.displayName,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'dearprogrammerofficial@gmail.com',
-                  style: TextStyle(fontSize: 16, color: AppColors.grey),
+                Text(
+                  user.email,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(color: AppColors.grey),
                 ),
                 const SizedBox(height: 8),
-                const Chip(
-                  label: Text('Online', style: TextStyle(color: Colors.green)),
-                  backgroundColor: Color(0xFFE8F5E9), // Light green
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 4, horizontal: 12),
+                  decoration: BoxDecoration(
+                    color: user.isOnline
+                        ? AppTheme.successColor.withValues(alpha: 0.1)
+                        : AppTheme.textSecondaryColor.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        height: 8,
+                        width: 8,
+                        decoration: BoxDecoration(
+                          color: user.isOnline
+                              ? AppTheme.successColor
+                              : AppTheme.textSecondaryColor,
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        user.isOnline ? 'Online' : 'Offline',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: user.isOnline
+                              ? AppTheme.successColor
+                              : AppTheme.textSecondaryColor,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
                 const SizedBox(height: 4),
-                const Text(
-                  'Joined Jul 2020',
-                  style: TextStyle(color: AppColors.grey),
+                Text(
+                  controller.getJoinedData(),
+                  style: Theme.of(Get.context!).textTheme.bodySmall?.copyWith(
+                    color: AppTheme.textSecondaryColor,
+                  ),
                 ),
                 const SizedBox(height: 24),
 
                 // Personal Information Card
-                _buildPersonalInfoCard(),
-
+                Obx(
+                  () => Card(
+                    child: Padding(
+                      padding: EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Personal Information",
+                            style: Theme.of(Get.context!)
+                                .textTheme
+                                .headlineSmall
+                                ?.copyWith(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: controller.displayNameController,
+                            enabled: controller.isEditing,
+                            decoration: InputDecoration(
+                              labelText: 'Display Name',
+                              prefixIcon: Icon(Icons.person_outline),
+                            ),
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: controller.emailController,
+                            enabled: false,
+                            decoration: InputDecoration(
+                              labelText: 'Email',
+                              prefixIcon: Icon(Icons.email_outlined),
+                              helperText: 'Email cannot be changed',
+                            ),
+                          ),
+                          if (controller.isEditing) ...[
+                            SizedBox(height: 20),
+                            SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                onPressed: controller.isLoading
+                                    ? null
+                                    : controller.updateProfile,
+                                child: controller.isLoading
+                                    ? SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : Text("Save Changes"),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 24),
-
-                // Menu Items
-                _ProfileMenuItem(
-                  icon: Icons.shield_outlined,
-                  title: 'Change Password',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const ChangePasswordScreen(),
+                Card(
+                  child: Column(
+                    children: [
+                      ListTile(
+                        leading: Icon(
+                          Icons.security,
+                          color: AppTheme.primaryColor,
+                        ),
+                        title: Text('Change Password'),
+                        trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                        onTap: () => Get.toNamed('/change-Password'),
                       ),
-                    );
-                  },
-                ),
-                const Divider(),
-                _ProfileMenuItem(
-                  icon: Icons.logout,
-                  title: 'Sign Out',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SigninScreen(),
+                      Divider(height: 1, color: Colors.grey),
+                      ListTile(
+                        leading: Icon(
+                          Icons.delete_forever,
+                          color: AppTheme.errorColor,
+                        ),
+                        title: Text('Delete Account'),
+                        trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                        onTap: controller.deleteAccount,
                       ),
-                    );
-                  },
-                ),
-                const Divider(),
-                _ProfileMenuItem(
-                  icon: Icons.delete_outline,
-                  title: 'Delete Account',
-                  textColor: Colors.red,
-                  onTap: () {},
+                      Divider(height: 1, color: Colors.grey),
+                      ListTile(
+                        leading: Icon(Icons.logout, color: AppTheme.errorColor),
+                        title: Text('Sign Out'),
+                        trailing: Icon(Icons.arrow_forward_ios, size: 16),
+                        onTap: controller.signOut,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
         );
       }),
-    );
-  }
-
-  // Helper widget for the Personal Information card
-  Widget _buildPersonalInfoCard() {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
-            spreadRadius: 2,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Personal Information',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: 16),
-          // Read-only TextFields
-          TextField(
-            readOnly: true,
-            controller: TextEditingController(text: 'Dear Programmer'),
-            decoration: InputDecoration(
-              filled: true,
-              fillColor: AppColors.lightGrey,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide.none,
-              ),
-            ),
-          ),
-          const SizedBox(height: 12),
-          TextField(
-            readOnly: true,
-            controller: TextEditingController(
-              text: 'dearprogrammerofficial@gmail.com',
-            ),
-            decoration: InputDecoration(
-              prefixIcon: const Icon(Icons.email_outlined),
-              filled: true,
-              fillColor: AppColors.lightGrey,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(12.0),
-                borderSide: BorderSide.none,
-              ),
-              helperText: 'Email cannot be changed',
-              helperStyle: const TextStyle(color: AppColors.grey),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-// Helper widget for menu items like "Change Password", "Sign Out", etc.
-class _ProfileMenuItem extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final VoidCallback onTap;
-  final Color? textColor;
-
-  const _ProfileMenuItem({
-    required this.icon,
-    required this.title,
-    required this.onTap,
-    this.textColor,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      leading: Icon(icon, color: textColor ?? AppColors.black),
-      title: Text(
-        title,
-        style: TextStyle(fontSize: 16, color: textColor ?? AppColors.black),
-      ),
-      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
     );
   }
 }

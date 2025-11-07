@@ -82,6 +82,8 @@ class ProfileController extends GetxController {
         _error.value,
         snackPosition: SnackPosition.BOTTOM,
       );
+    } finally {
+      _isLoading.value = false;
     }
   }
   Future<void> signOut() async {

@@ -1,4 +1,6 @@
+import 'package:buzzify/controller/change_password_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/widgets/custom_button.dart';
@@ -9,11 +11,12 @@ class ChangePasswordScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ChangePasswordController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // leading: const Icon(Icons.arrow_back, color: AppColors.black),
+        
         title: const Text(
           'Change Password',
           style: TextStyle(color: AppColors.black),
@@ -31,7 +34,7 @@ class ChangePasswordScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primary.withValues(alpha: 0.1)
+                  color: AppColors.primary.withValues(alpha: 0.1),
                 ),
                 child: const Icon(
                   Icons.shield_outlined,
@@ -54,36 +57,83 @@ class ChangePasswordScreen extends StatelessWidget {
               ),
               const SizedBox(height: 32),
 
-              // Reusing the CustomTextField widget
-              const CustomTextField(
-                hintText: 'Current Password',
-                prefixIcon: AppIcons.password,
-                obscureText: true,
-                suffixIcon: Icon(AppIcons.visibility, color: AppColors.grey),
-              ),
-              const SizedBox(height: 20),
-              const CustomTextField(
-                hintText: 'New Password',
-                prefixIcon: AppIcons.password,
-                obscureText: true,
-                suffixIcon: Icon(AppIcons.visibility, color: AppColors.grey),
-              ),
-              const SizedBox(height: 20),
-              const CustomTextField(
-                hintText: 'Confirm New Password',
-                prefixIcon: AppIcons.password,
-                obscureText: true,
-                suffixIcon: Icon(AppIcons.visibility, color: AppColors.grey),
+              Form(
+                key: controller.formKey,
+                child: Column(
+                  children: [
+                    Obx(
+                      () => CustomTextField(
+                        hintText: 'Current Password',
+                        prefixIcon: AppIcons.password,
+                        controller: controller.currentPasswordController,
+                        obscureText: controller.obscureCurrentPassword.value,
+                        validator: controller.validateCurrentPassword,
+                        suffixIcon: IconButton(
+                          onPressed: controller.toggleCurrentPasswordVisibility,
+                          icon: Icon(
+                            controller.obscureCurrentPassword.value
+                                ? AppIcons.visibility
+                                : AppIcons.visibilityOff,
+                            color: AppColors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Obx(
+                      () => CustomTextField(
+                        hintText: 'New Password',
+                        prefixIcon: AppIcons.password,
+                        controller: controller.newPasswordController,
+                        obscureText: controller.obscureNewPassword.value,
+                        validator: controller.validateNewPassword,
+                        suffixIcon: IconButton(
+                          onPressed: controller.toggleNewPasswordVisibility,
+                          icon: Icon(
+                            controller.obscureNewPassword.value
+                                ? AppIcons.visibility
+                                : AppIcons.visibilityOff,
+                            color: AppColors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Obx(
+                      () => CustomTextField(
+                        hintText: 'Confirm New Password',
+                        prefixIcon: AppIcons.password,
+                        controller: controller.confirmPasswordController,
+                        obscureText: controller.obscureConfirmPassword.value,
+                        validator: controller.validateConfirmPassword,
+                        suffixIcon: IconButton(
+                          onPressed: controller.toggleConfirmPasswordVisibility,
+                          icon: Icon(
+                            controller.obscureConfirmPassword.value
+                                ? AppIcons.visibility
+                                : AppIcons.visibilityOff,
+                            color: AppColors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(height: 40),
 
               // Reusing the CustomButton widget
-              CustomButton(
-                text: 'Update Password',
-                leadingIcon: Icons.shield,
-                onPressed: () {
-                  // Handle password update logic
-                },
+              Obx(
+                () => CustomButton(
+                  text: 'Update Password',
+                  leadingIcon: Icons.shield,
+                  onPressed: controller.isLoading.value
+                      ? () {}
+                      : () => controller.changePassword(),
+                  label: controller.isLoading.value
+                      ? 'Updating...'
+                      : 'Update Password',
+                ),
               ),
             ],
           ),
