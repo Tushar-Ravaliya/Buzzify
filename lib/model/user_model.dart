@@ -31,7 +31,7 @@ class UserModel {
     };
   }
   static UserModel fromMap(Map<String, dynamic> map) {
-    int _toMillis(dynamic value) {
+    int toMillis(dynamic value) {
       if (value == null) return 0;
       if (value is int) return value;
       if (value is Timestamp) return value.millisecondsSinceEpoch;
@@ -44,8 +44,8 @@ class UserModel {
       displayName: map['displayName'] ?? "",
       photoUrl: map['photoUrl'] ?? "",
       isOnline: map['isOnline'] ?? false,
-      lastSeen: DateTime.fromMillisecondsSinceEpoch(_toMillis(map['lastSeen'])),
-      createdAt: DateTime.fromMillisecondsSinceEpoch(_toMillis(map['createdAt']))
+      lastSeen: DateTime.fromMillisecondsSinceEpoch(toMillis(map['lastSeen'])),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(toMillis(map['createdAt']))
     );
   }
   UserModel copyWith({

@@ -25,9 +25,9 @@ class AuthController extends GetxController {
   }
 
   Future<void> _handleAuthStateChanged(User? user) async {
-    if (user != null) {
+    if (user == null) {
       if (Get.currentRoute != AppRoutes.signin) {
-        Get.offAllNamed(AppRoutes.home);
+        Get.offAllNamed(AppRoutes.signin);
       }
     } else {
       if (Get.currentRoute != AppRoutes.main) {
@@ -49,15 +49,15 @@ class AuthController extends GetxController {
     }
     _isinitialized.value = true;
   }
-  Future<void> signInWithEmailAndPassword(
-    String email,
-    String password,
-  ) async {
+
+  Future<void> signInWithEmailAndPassword(String email, String password) async {
     _isLoading.value = true;
     _error.value = '';
     try {
-      UserModel? userModel =
-          await _authService.signInWithEmailAndPassword(email, password);
+      UserModel? userModel = await _authService.signInWithEmailAndPassword(
+        email,
+        password,
+      );
       if (userModel != null) {
         _userModel.value = userModel;
         Get.offAllNamed(AppRoutes.profile);
@@ -65,11 +65,11 @@ class AuthController extends GetxController {
     } catch (e) {
       _error.value = e.toString();
       Get.snackbar('Sign In Error', _error.value);
-
     } finally {
       _isLoading.value = false;
     }
   }
+
   Future<void> registerWithEmailAndPassword(
     String email,
     String password,
@@ -79,7 +79,10 @@ class AuthController extends GetxController {
     _error.value = '';
     try {
       UserModel? userModel = await _authService.registerWithEmailAndPassword(
-          email, password, displayName);
+        email,
+        password,
+        displayName,
+      );
       if (userModel != null) {
         _userModel.value = userModel;
         Get.offAllNamed(AppRoutes.main);
@@ -91,6 +94,7 @@ class AuthController extends GetxController {
       _isLoading.value = false;
     }
   }
+
   Future<void> signOut() async {
     _isLoading.value = true;
     _error.value = '';
@@ -105,6 +109,7 @@ class AuthController extends GetxController {
       _isLoading.value = false;
     }
   }
+
   Future<void> deleteAccount() async {
     _isLoading.value = true;
     _error.value = '';
@@ -121,6 +126,7 @@ class AuthController extends GetxController {
       _isLoading.value = false;
     }
   }
+
   void clearError() {
     _error.value = '';
   }

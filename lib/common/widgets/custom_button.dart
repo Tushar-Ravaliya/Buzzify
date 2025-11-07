@@ -5,13 +5,15 @@ import '../constants/app_colors.dart';
 class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
-  final IconData? leadingIcon; // Add this line
+  final IconData? leadingIcon; 
+  final String? label;
 
   const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
-    this.leadingIcon, // Add this line
+    this.leadingIcon, 
+    this.label,
   });
 
   @override

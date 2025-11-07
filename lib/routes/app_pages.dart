@@ -3,6 +3,7 @@ import 'package:buzzify/features/auth/forgot_password_screen.dart';
 import 'package:buzzify/features/auth/signin_screen.dart';
 import 'package:buzzify/features/auth/signup_screen.dart';
 import 'package:buzzify/features/chat/chat_list_screen.dart';
+import 'package:buzzify/features/profile/change_password_screen.dart';
 import 'package:buzzify/features/profile/profile_screen.dart';
 import 'package:buzzify/routes/app_routes.dart';
 import 'package:get/get.dart';
@@ -13,13 +14,16 @@ class AppPages {
   static final routes = [
     GetPage(name: AppRoutes.signin, page: () => const SigninScreen()),
     GetPage(name: AppRoutes.signup, page: () => const SignupScreen()),
-    // Home/Main routes
-    GetPage(name: AppRoutes.home, page: () => const ChatListScreen()),
+
     GetPage(name: AppRoutes.main, page: () => const ChatListScreen()),
-    // Forgot Password
+
     GetPage(
       name: AppRoutes.forgotPassword,
-      page: () => const ForgotPasswordScreen(), 
+      page: () => const ForgotPasswordScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.changePassword,
+      page: () => const ChangePasswordScreen(),
     ),
     // binding: BindingsBuilder(() {
     //   Get.put(RegisterController());
