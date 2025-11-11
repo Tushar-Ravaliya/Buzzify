@@ -4,7 +4,7 @@ class ChatModel {
   final String? lastMessage;
   final DateTime? lastMessageTime;
   final String? lastMessageSenderId;
-  final Map<String, int> unreadCounts;
+  final Map<String, int> unreadCount;
   final Map<String, bool> deletedBy;
   final Map<String, DateTime?> deletedAt;
   final Map<String, DateTime?> lastSeenBy;
@@ -16,7 +16,7 @@ class ChatModel {
     this.lastMessage,
     this.lastMessageTime,
     this.lastMessageSenderId,
-    required this.unreadCounts,
+    required this.unreadCount,
     this.deletedBy = const {},
     this.deletedAt = const {},
     this.lastSeenBy = const {},
@@ -30,7 +30,7 @@ class ChatModel {
       'lastMessage': lastMessage,
       'lastMessageTime': lastMessageTime?.millisecondsSinceEpoch,
       'lastMessageSenderId': lastMessageSenderId,
-      'unreadCounts': unreadCounts,
+      'unreadCount': unreadCount,
       'deletedBy': deletedBy,
       'deletedAt': deletedAt.map(
         (key, value) => MapEntry(key, value?.millisecondsSinceEpoch),
@@ -76,7 +76,7 @@ class ChatModel {
           ? DateTime.fromMillisecondsSinceEpoch(map['lastMessageTime'])
           : null,
       lastMessageSenderId: map['lastMessageSenderId'],
-      unreadCounts: Map<String, int>.from(map['unreadCounts'] ?? {}),
+      unreadCount: Map<String, int>.from(map['unreadCount'] ?? {}),
       deletedBy: Map<String, bool>.from(map['deletedBy'] ?? {}),
       deletedAt: deletedAtMap,
       lastSeenBy: lastSeenMap,
@@ -91,7 +91,7 @@ class ChatModel {
     String? lastMessage,
     DateTime? lastMessageTime,
     String? lastMessageSenderId,
-    Map<String, int>? unreadCounts,
+    Map<String, int>? unreadCount,
     Map<String, bool>? deletedBy,
     Map<String, DateTime?>? deletedAt,
     Map<String, DateTime?>? lastSeenBy,
@@ -104,7 +104,7 @@ class ChatModel {
       lastMessage: lastMessage ?? this.lastMessage,
       lastMessageTime: lastMessageTime ?? this.lastMessageTime,
       lastMessageSenderId: lastMessageSenderId ?? this.lastMessageSenderId,
-      unreadCounts: unreadCounts ?? this.unreadCounts,
+      unreadCount: unreadCount ?? this.unreadCount,
       deletedBy: deletedBy ?? this.deletedBy,
       deletedAt: deletedAt ?? this.deletedAt,
       lastSeenBy: lastSeenBy ?? this.lastSeenBy,
@@ -121,7 +121,7 @@ class ChatModel {
   }
 
   int getUnreadCount(String userId) {
-    return unreadCounts[userId] ?? 0;
+    return unreadCount[userId] ?? 0;
   }
 
   bool isDeletedBy(String userId) {
