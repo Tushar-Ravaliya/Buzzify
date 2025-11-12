@@ -1,8 +1,10 @@
+import 'package:buzzify/controller/main_controller.dart';
 import 'package:buzzify/controller/profile_controller.dart';
 import 'package:buzzify/features/auth/forgot_password_screen.dart';
 import 'package:buzzify/features/auth/signin_screen.dart';
 import 'package:buzzify/features/auth/signup_screen.dart';
 import 'package:buzzify/features/chat/chat_list_screen.dart';
+import 'package:buzzify/features/main/main_screen.dart';
 import 'package:buzzify/features/profile/change_password_screen.dart';
 import 'package:buzzify/features/profile/profile_screen.dart';
 import 'package:buzzify/routes/app_routes.dart';
@@ -15,8 +17,7 @@ class AppPages {
     GetPage(name: AppRoutes.signin, page: () => const SigninScreen()),
     GetPage(name: AppRoutes.signup, page: () => const SignupScreen()),
 
-    GetPage(name: AppRoutes.main, page: () => const ChatListScreen()),
-
+    // GetPage(name: AppRoutes.main, page: () => ),
     GetPage(
       name: AppRoutes.forgotPassword,
       page: () => const ForgotPasswordScreen(),
@@ -24,6 +25,17 @@ class AppPages {
     GetPage(
       name: AppRoutes.changePassword,
       page: () => const ChangePasswordScreen(),
+    ),
+    GetPage(
+      name: AppRoutes.main,
+      page: () => MainScreen(),
+
+      binding: BindingsBuilder(() {
+        Get.put(MainController());
+        if (!Get.isRegistered<ProfileController>()) {
+          Get.lazyPut(() => ProfileController());
+        }
+      }),
     ),
     // binding: BindingsBuilder(() {
     //   Get.put(RegisterController());
@@ -34,19 +46,13 @@ class AppPages {
     //   Get.put(HomeController());
     // }),
     // ),
-    // GetPage(
-    //   name: AppRoutes.main,
-    //   page: () => const MainView(),
-
-    //   binding: BindingsBuilder(() {
-    //     Get.put(MainController());
-    //   }),
-    // ),
     GetPage(
       name: AppRoutes.profile,
-      page: () => const ProfileScreen(),
+      page: () => ProfileScreen(),
       binding: BindingsBuilder(() {
-        Get.put(ProfileController());
+        if (!Get.isRegistered<ProfileController>()) {
+          Get.lazyPut(() => ProfileController());
+        }
       }),
     ),
     // GetPage(
