@@ -2,7 +2,9 @@ import 'package:buzzify/controller/auth_controller.dart';
 import 'package:buzzify/model/friend_request_model.dart';
 import 'package:buzzify/model/friendship_model.dart';
 import 'package:buzzify/model/user_model.dart';
+import 'package:buzzify/routes/app_routes.dart';
 import 'package:buzzify/service/firestore_service.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:uuid/uuid.dart';
@@ -155,7 +157,7 @@ class UsersListController extends GetxController {
 
   Future<void> sendFriendRequest(UserModel user) async {
     try {
-      _isLoading.value =  true;
+      _isLoading.value = true;
       final currentUserId = _authController.user?.uid;
       if (currentUserId != null) {
         final request = FriendRequestModel(
@@ -179,5 +181,211 @@ class UsersListController extends GetxController {
     } finally {
       _isLoading.value = false;
     }
+  }
+
+  Future<void> cancelFriendRequest(UserModel user) async {
+    try {
+      _isLoading.value = true;
+      final currentUserId = _authController.user?.uid;
+      if (currentUserId != null) {
+        final request = _sentRequests.firstWhereOrNull(
+          (r) =>
+              r.receiverId == user.id &&
+              r.status == FriendRequestStatus.pending,
+        );
+        if (request != null) {
+          _userRelationships[user.id] = UserRelationshipStatus.none;
+          await firestoreService.cancelFriendRequest(request.id);
+          Get.snackbar('Success', "Friend Request Cancelled");
+        }
+      }
+    } catch (e) {
+      _userRelationships[user.id] = UserRelationshipStatus.friendRequestSent;
+      _error.value = e.toString();
+      print("Error cancelling friend request: $e");
+      Get.snackbar('Error', "Failed to cancel friend request");
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  Future<void> acceptFriendRequest(UserModel user) async {
+    try {
+      _isLoading.value = true;
+      final currentUserId = _authController.user?.uid;
+      if (currentUserId != null) {
+        final request = _receivedRequests.firstWhereOrNull(
+          (r) =>
+              r.senderId == user.id && r.status == FriendRequestStatus.pending,
+        );
+        if (request != null) {
+          _userRelationships[user.id] = UserRelationshipStatus.friends;
+          await firestoreService.respondToFriendRequest(
+            request.id,
+            FriendRequestStatus.accepted,
+          );
+          Get.snackbar('Success', "Friend Request Accepted");
+        }
+      }
+    } catch (e) {
+      _userRelationships[user.id] =
+          UserRelationshipStatus.friendRequestReceived;
+      _error.value = e.toString();
+      print("Error accepting friend request: $e");
+      Get.snackbar('Error', "Failed to accept friend request");
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  Future<void> declineFriendRequest(UserModel user) async {
+    try {
+      _isLoading.value = true;
+      final currentUserId = _authController.user?.uid;
+      if (currentUserId != null) {
+        final request = _receivedRequests.firstWhereOrNull(
+          (r) =>
+              r.senderId == user.id && r.status == FriendRequestStatus.pending,
+        );
+        if (request != null) {
+          _userRelationships[user.id] = UserRelationshipStatus.none;
+          await firestoreService.respondToFriendRequest(
+            request.id,
+            FriendRequestStatus.declined,
+          );
+          Get.snackbar('Success', "Friend Request Declined");
+        }
+      }
+    } catch (e) {
+      _userRelationships[user.id] =
+          UserRelationshipStatus.friendRequestReceived;
+      _error.value = e.toString();
+      print("Error declining friend request: $e");
+      Get.snackbar('Error', "Failed to decline friend request");
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  Future<void> startChat(UserModel user) async {
+    try {
+      _isLoading.value = true;
+      final currentUserId = _authController.user?.uid;
+      if (currentUserId != null) {
+        final relationship =
+            _userRelationships[user.id] ?? UserRelationshipStatus.none;
+        if (relationship != UserRelationshipStatus.friends) {
+          Get.snackbar('Info', "You can only chat with friends.");
+          return;
+        }
+        final chatId = await firestoreService.createOrGetChat(
+          currentUserId,
+          user.id,
+        );
+
+        Get.toNamed(
+          AppRoutes.chat,
+          arguments: {'chatId': chatId, 'otherUser': user},
+        );
+      }
+    } catch (e) {
+      _error.value = e.toString();
+      print("Error starting chat: $e");
+      Get.snackbar('Error', "Failed to start chat");
+    } finally {
+      _isLoading.value = false;
+    }
+  }
+
+  UserRelationshipStatus getUserRelationshipStatus(String userId) {
+    return _userRelationships[userId] ?? UserRelationshipStatus.none;
+  }
+
+  String getRelationshipButtonText(UserRelationshipStatus status) {
+    switch (status) {
+      case UserRelationshipStatus.none:
+        return 'Add';
+      case UserRelationshipStatus.friendRequestSent:
+        return 'Request';
+      case UserRelationshipStatus.friendRequestReceived:
+        return 'Accept';
+      case UserRelationshipStatus.friends:
+        return 'Message';
+      case UserRelationshipStatus.blocked:
+        return 'Blocked';
+    }
+  }
+
+  IconData getRelationshipButtonIcon(UserRelationshipStatus status) {
+    switch (status) {
+      case UserRelationshipStatus.none:
+        return Icons.person_add;
+      case UserRelationshipStatus.friendRequestSent:
+        return Icons.access_time;
+      case UserRelationshipStatus.friendRequestReceived:
+        return Icons.check;
+      case UserRelationshipStatus.friends:
+        return Icons.chat_bubble_outline;
+      case UserRelationshipStatus.blocked:
+        return Icons.block;
+    }
+  }
+
+  Color getRelationshipButtonColor(UserRelationshipStatus status) {
+    switch (status) {
+      case UserRelationshipStatus.none:
+        return Colors.blue;
+      case UserRelationshipStatus.friendRequestSent:
+        return Colors.orange;
+      case UserRelationshipStatus.friendRequestReceived:
+        return Colors.green;
+      case UserRelationshipStatus.friends:
+        return Colors.blue;
+      case UserRelationshipStatus.blocked:
+        return Colors.redAccent;
+    }
+  }
+
+  void handleRelationshipButtonPress(UserModel user) {
+    final status = getUserRelationshipStatus(user.id);
+    switch (status) {
+      case UserRelationshipStatus.none:
+        sendFriendRequest(user);
+        break;
+      case UserRelationshipStatus.friendRequestSent:
+        cancelFriendRequest(user);
+        break;
+      case UserRelationshipStatus.friendRequestReceived:
+        acceptFriendRequest(user);
+        break;
+      case UserRelationshipStatus.friends:
+        startChat(user);
+        break;
+      case UserRelationshipStatus.blocked:
+        // Do nothing or show a message
+        break;
+    }
+  }
+
+  String getLastSeenText(UserModel user) {
+    if (user.isOnline) {
+      return 'Online';
+    } else {
+      final now = DateTime.now();
+      final difference = now.difference(user.lastSeen);
+      if (difference.inMinutes < 1) {
+        return 'Last seen just now';
+      } else if (difference.inHours < 1) {
+        return 'Last seen ${difference.inMinutes} m ago';
+      } else if (difference.inDays < 1) {
+        return 'Last seen ${difference.inHours} h ago';
+      } else {
+        return 'Last seen on ${user.lastSeen.month}/${user.lastSeen.day}/${user.lastSeen.year}';
+      }
+    }
+  }
+
+  void _clearError() {
+    _error.value = '';
   }
 }

@@ -3,7 +3,6 @@ import 'package:buzzify/controller/profile_controller.dart';
 import 'package:buzzify/features/auth/forgot_password_screen.dart';
 import 'package:buzzify/features/auth/signin_screen.dart';
 import 'package:buzzify/features/auth/signup_screen.dart';
-import 'package:buzzify/features/chat/chat_list_screen.dart';
 import 'package:buzzify/features/main/main_screen.dart';
 import 'package:buzzify/features/profile/change_password_screen.dart';
 import 'package:buzzify/features/profile/profile_screen.dart';
@@ -32,9 +31,6 @@ class AppPages {
 
       binding: BindingsBuilder(() {
         Get.put(MainController());
-        if (!Get.isRegistered<ProfileController>()) {
-          Get.lazyPut(() => ProfileController());
-        }
       }),
     ),
     // binding: BindingsBuilder(() {
@@ -50,9 +46,7 @@ class AppPages {
       name: AppRoutes.profile,
       page: () => ProfileScreen(),
       binding: BindingsBuilder(() {
-        if (!Get.isRegistered<ProfileController>()) {
-          Get.lazyPut(() => ProfileController());
-        }
+        Get.put(() => ProfileController());
       }),
     ),
     // GetPage(

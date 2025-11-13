@@ -1,4 +1,5 @@
 import 'package:buzzify/controller/profile_controller.dart';
+import 'package:buzzify/controller/user_list_controller.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
@@ -8,27 +9,35 @@ class MainController extends GetxController {
 
   int get currentIndex => _currentIndex.value;
   @override
-  void onInt(){
+  void onInit() {
     super.onInit();
 
     // Get.lazyPut(() => MainController());
     // Get.lazyPut(() => FriendsController());
-    // Get.lazyPut(() => UserListController());
+    Get.lazyPut(() => UsersListController());
     Get.lazyPut(() => ProfileController());
   }
+
   @override
   void onClose() {
     pageController.dispose();
     super.onClose();
   }
+
   void changeTabIndex(int index) {
     _currentIndex.value = index;
-    pageController.animateToPage(index, duration: Duration(microseconds: 300), curve: Curves.ease);
+    pageController.animateToPage(
+      index,
+      duration: Duration(microseconds: 300),
+      curve: Curves.ease,
+    );
   }
+
   void onPageChanged(int index) {
     _currentIndex.value = index;
   }
-  int getUnreadCount(){
+
+  int getUnreadCount() {
     try {
       // final homeController = Get.find<HomeController>();
       // return homeController.getUnreadCount();
@@ -37,7 +46,8 @@ class MainController extends GetxController {
       return 0;
     }
   }
-  int getNotificationCount(){
+
+  int getNotificationCount() {
     try {
       // final homeController = Get.find<HomeController>();
       // return homeController.getNotificationCount();
