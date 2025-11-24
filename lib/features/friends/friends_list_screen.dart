@@ -3,7 +3,6 @@ import 'package:buzzify/controller/friends_controller.dart';
 import 'package:buzzify/features/friends/widgets/friend_list_item.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 import '../../common/widgets/custom_button.dart';
 
 class FriendsListScreen extends GetView<FriendsController> {
@@ -15,7 +14,7 @@ class FriendsListScreen extends GetView<FriendsController> {
       appBar: AppBar(
         title: const Text(
           'Friends',
-          style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: AppTheme.textPrimaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -50,11 +49,11 @@ class FriendsListScreen extends GetView<FriendsController> {
                 }),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  borderSide: BorderSide(color: AppColors.grey),
+                  borderSide: BorderSide(color: AppTheme.borderColor),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  borderSide: BorderSide(color: AppColors.grey),
+                  borderSide: BorderSide(color: AppTheme.borderColor),
                 ),
               ),
             ),
@@ -65,7 +64,7 @@ class FriendsListScreen extends GetView<FriendsController> {
                   if (controller.friends.isNotEmpty && controller.isLoading) {
                     return Center(
                       child: CircularProgressIndicator(
-                        color: AppColors.primary,
+                        color: AppTheme.primaryColor,
                       ),
                     );
                   }

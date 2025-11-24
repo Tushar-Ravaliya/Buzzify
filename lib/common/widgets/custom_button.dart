@@ -1,6 +1,5 @@
 import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 
 class CustomButton extends StatelessWidget {
   final String text;
@@ -34,11 +33,11 @@ class CustomButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             if (leadingIcon != null) // Conditionally show the icon
-              Icon(leadingIcon, color: AppColors.white),
+              Icon(leadingIcon, color: Colors.white),
             if (leadingIcon != null) const SizedBox(width: 8), // Add spacing
             Text(
               text,
-              style: const TextStyle(fontSize: 18, color: AppColors.white),
+              style: const TextStyle(fontSize: 18, color: Colors.white),
             ),
           ],
         ),

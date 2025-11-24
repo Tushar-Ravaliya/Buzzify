@@ -1,7 +1,7 @@
+import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:buzzify/controller/change_password_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/widgets/custom_button.dart';
 import '../../common/widgets/custom_text_field.dart';
@@ -19,7 +19,7 @@ class ChangePasswordScreen extends StatelessWidget {
         
         title: const Text(
           'Change Password',
-          style: TextStyle(color: AppColors.black),
+          style: TextStyle(color: AppTheme.textPrimaryColor),
         ),
         centerTitle: true,
       ),
@@ -34,11 +34,11 @@ class ChangePasswordScreen extends StatelessWidget {
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.primary.withValues(alpha: 0.1),
+                  color: AppTheme.primaryColor.withValues(alpha: 0.1),
                 ),
                 child: const Icon(
                   Icons.shield_outlined,
-                  color: AppColors.primary,
+                  color: AppTheme.primaryColor,
                   size: 60,
                 ),
               ),
@@ -53,7 +53,7 @@ class ChangePasswordScreen extends StatelessWidget {
               const Text(
                 'Enter your current password and choose a new secure password',
                 textAlign: TextAlign.center,
-                style: TextStyle(color: AppColors.grey, fontSize: 16),
+                style: TextStyle(color: AppTheme.textSecondaryColor, fontSize: 16),
               ),
               const SizedBox(height: 32),
 
@@ -74,7 +74,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             controller.obscureCurrentPassword.value
                                 ? AppIcons.visibility
                                 : AppIcons.visibilityOff,
-                            color: AppColors.grey,
+                            color: AppTheme.textSecondaryColor,
                           ),
                         ),
                       ),
@@ -93,7 +93,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             controller.obscureNewPassword.value
                                 ? AppIcons.visibility
                                 : AppIcons.visibilityOff,
-                            color: AppColors.grey,
+                            color: AppTheme.textSecondaryColor,
                           ),
                         ),
                       ),
@@ -112,7 +112,7 @@ class ChangePasswordScreen extends StatelessWidget {
                             controller.obscureConfirmPassword.value
                                 ? AppIcons.visibility
                                 : AppIcons.visibilityOff,
-                            color: AppColors.grey,
+                            color: AppTheme.textSecondaryColor,
                           ),
                         ),
                       ),

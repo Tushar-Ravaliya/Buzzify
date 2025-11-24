@@ -1,8 +1,8 @@
+import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:buzzify/controller/forgot_password_controller.dart';
 import 'package:buzzify/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 import '../../common/widgets/custom_button.dart';
 
 class ResetConfirmationScreen extends StatelessWidget {
@@ -16,17 +16,16 @@ class ResetConfirmationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: AppColors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: AppTheme.textPrimaryColor),
           onPressed: () => Navigator.pop(context),
         ),
         title: const Text(
           'Forgot Password',
-          style: TextStyle(color: AppColors.black),
+          style: TextStyle(color: AppTheme.textPrimaryColor),
         ),
         centerTitle: true,
       ),
@@ -41,7 +40,7 @@ class ResetConfirmationScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(24.0),
                 decoration: BoxDecoration(
-                  color: AppColors.lightGreen,
+                  color: AppTheme.successColor.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16.0),
                 ),
                 child: Column(
@@ -65,14 +64,14 @@ class ResetConfirmationScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 16,
-                        color: AppColors.grey,
+                        color: AppTheme.textSecondaryColor,
                       ),
                     ),
                     const SizedBox(height: 8),
                     const Text(
                       'Check your email and follow the instructions to reset your password',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, color: AppColors.grey),
+                      style: TextStyle(fontSize: 14, color: AppTheme.textSecondaryColor),
                     ),
                   ],
                 ),
@@ -83,17 +82,17 @@ class ResetConfirmationScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: OutlinedButton.icon(
-                  icon: const Icon(Icons.refresh, color: AppColors.black),
+                  icon: const Icon(Icons.refresh, color: AppTheme.textPrimaryColor),
                   label: const Text(
                     'Resend Email',
-                    style: TextStyle(fontSize: 16, color: AppColors.black),
+                    style: TextStyle(fontSize: 16, color: AppTheme.textPrimaryColor),
                   ),
                   onPressed: () {
                     controller.sendPasswordResetEmail();
                   },
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16.0),
-                    backgroundColor: AppColors.lightGrey,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     side: const BorderSide(color: Colors.transparent),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12.0),
@@ -117,7 +116,7 @@ class ResetConfirmationScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(12.0),
                 decoration: BoxDecoration(
-                  color: AppColors.lightGrey,
+                  color: AppTheme.backgroundColor,
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: Wrap(
@@ -127,10 +126,10 @@ class ResetConfirmationScreen extends StatelessWidget {
                   runSpacing: 4.0,
 
                   children: [
-                    Icon(Icons.info_outline, color: AppColors.grey, size: 20),
+                    Icon(Icons.info_outline, color: AppTheme.textSecondaryColor, size: 20),
                     Text(
                       "Didn't receive the email? Check spam folder",
-                      style: TextStyle(color: AppColors.grey),
+                      style: TextStyle(color: AppTheme.textSecondaryColor),
                       textAlign: TextAlign.center,
                     ),
                   ],

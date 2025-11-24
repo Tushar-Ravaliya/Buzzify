@@ -345,7 +345,7 @@ class FirestoreService {
     try {
       List<String> userIds = [user1Id, user2Id];
       userIds.sort();
-      String friendShipId = '${userIds[0]}_ ${userIds[1]} ';
+      String friendShipId = '${userIds[0]} ${userIds[1]}';
 
       DocumentSnapshot doc = await _firestore
           .collection('friendships')
@@ -364,7 +364,7 @@ class FirestoreService {
     try {
       List<String> userIds = [userId, otherUserId];
       userIds.sort();
-      String friendShipId = '${userIds[0]}_ ${userIds[1]} ';
+      String friendShipId = '${userIds[0]} ${userIds[1]}';
       DocumentSnapshot doc = await _firestore
           .collection('friendships')
           .doc(friendShipId)
@@ -385,7 +385,7 @@ class FirestoreService {
     try {
       List<String> userIds = [userId, otherUserId];
       userIds.sort();
-      String friendshipId = '${userIds[0]}_${userIds[1]}';
+      String friendshipId = '${userIds[0]} ${userIds[1]}';
       DocumentSnapshot doc = await _firestore
           .collection('friendships')
           .doc(friendshipId)

@@ -3,7 +3,6 @@ import 'package:buzzify/controller/auth_controller.dart';
 import 'package:buzzify/routes/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/widgets/custom_button.dart';
 import '../../common/widgets/custom_text_field.dart';
@@ -38,12 +37,11 @@ class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: AppColors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: AppTheme.textPrimaryColor),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -63,7 +61,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.black,
+                  color: AppTheme.textPrimaryColor,
                 ),
               ),
               const SizedBox(height: 8),
@@ -71,7 +69,7 @@ class _SignupScreenState extends State<SignupScreen> {
               // Subtitle
               const Text(
                 'Fill in your details to get started',
-                style: TextStyle(fontSize: 16, color: AppColors.grey),
+                style: TextStyle(fontSize: 16, color: AppTheme.textSecondaryColor),
               ),
               const SizedBox(height: 40),
 
@@ -130,7 +128,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           _obscurePassword
                               ? AppIcons.visibility
                               : AppIcons.visibilityOff,
-                          color: AppColors.grey,
+                          color: AppTheme.textSecondaryColor,
                         ),
                         onPressed: () {
                           setState(() {
@@ -161,7 +159,7 @@ class _SignupScreenState extends State<SignupScreen> {
                           _obscureConfirmPassword
                               ? AppIcons.visibility
                               : AppIcons.visibilityOff,
-                          color: AppColors.grey,
+                          color: AppTheme.textSecondaryColor,
                         ),
                         onPressed: () {
                           setState(() {

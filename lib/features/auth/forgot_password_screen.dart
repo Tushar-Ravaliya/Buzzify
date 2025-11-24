@@ -4,7 +4,6 @@ import 'package:buzzify/features/auth/reset_confirmation_screen.dart';
 import 'package:buzzify/features/auth/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/widgets/custom_button.dart';
 import '../../common/widgets/custom_text_field.dart';
@@ -20,7 +19,7 @@ class ForgotPasswordScreen extends StatelessWidget {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios, color: AppColors.black),
+          icon: const Icon(Icons.arrow_back_ios, color: AppTheme.textPrimaryColor),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -65,7 +64,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                     ),
                     child: const Icon(
                       Icons.lock_reset,
-                      color: AppColors.primary,
+                      color: AppTheme.primaryColor,
                       size: 40,
                     ),
                   ),
@@ -131,7 +130,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                   children: [
                     const Text(
                       "Remember your password?",
-                      style: TextStyle(color: AppColors.grey),
+                      style: TextStyle(color: AppTheme.textSecondaryColor),
                     ),
                     TextButton(
                       onPressed: () {
@@ -145,7 +144,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                       child: const Text(
                         'Sign In',
                         style: TextStyle(
-                          color: AppColors.primary,
+                          color: AppTheme.primaryColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),

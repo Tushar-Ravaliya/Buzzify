@@ -1,8 +1,8 @@
 import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:buzzify/controller/profile_controller.dart';
+import 'package:buzzify/controller/theme_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 
 class ProfileScreen extends GetView<ProfileController> {
   const ProfileScreen({super.key});
@@ -51,10 +51,7 @@ class ProfileScreen extends GetView<ProfileController> {
                     user.displayName.isNotEmpty
                         ? user.displayName[0].toUpperCase()
                         : '?',
-                    style: const TextStyle(
-                      fontSize: 48,
-                      color: AppColors.white,
-                    ),
+                    style: const TextStyle(fontSize: 48, color: Colors.white),
                   ),
                 ),
                 const SizedBox(height: 12),
@@ -65,9 +62,9 @@ class ProfileScreen extends GetView<ProfileController> {
                 const SizedBox(height: 4),
                 Text(
                   user.email,
-                  style: Theme.of(
-                    context,
-                  ).textTheme.bodyMedium?.copyWith(color: AppColors.grey),
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppTheme.textSecondaryColor,
+                  ),
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -189,7 +186,7 @@ class ProfileScreen extends GetView<ProfileController> {
                         trailing: Icon(Icons.arrow_forward_ios, size: 16),
                         onTap: () => Get.toNamed('/change-Password'),
                       ),
-                      Divider(height: 1, color: Colors.grey),
+                      Divider(height: 1, color: Theme.of(context).dividerColor),
                       ListTile(
                         leading: Icon(
                           Icons.delete_forever,
@@ -199,7 +196,30 @@ class ProfileScreen extends GetView<ProfileController> {
                         trailing: Icon(Icons.arrow_forward_ios, size: 16),
                         onTap: controller.deleteAccount,
                       ),
-                      Divider(height: 1, color: Colors.grey),
+                      Divider(height: 1, color: Theme.of(context).dividerColor),
+                      Obx(() {
+                        final themeController = Get.find<ThemeController>();
+                        return ListTile(
+                          leading: Icon(
+                            themeController.isDarkMode
+                                ? Icons.light_mode
+                                : Icons.dark_mode,
+                            color: AppTheme.primaryColor,
+                          ),
+                          title: Text(
+                            themeController.isDarkMode
+                                ? 'Light Mode'
+                                : 'Dark Mode',
+                          ),
+                          trailing: Switch(
+                            value: themeController.isDarkMode,
+                            onChanged: (_) => themeController.toggleTheme(),
+                            activeColor: AppTheme.primaryColor,
+                          ),
+                          onTap: () => themeController.toggleTheme(),
+                        );
+                      }),
+                      Divider(height: 1, color: Theme.of(context).dividerColor),
                       ListTile(
                         leading: Icon(Icons.logout, color: AppTheme.errorColor),
                         title: Text('Sign Out'),

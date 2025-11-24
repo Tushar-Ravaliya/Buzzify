@@ -1,5 +1,5 @@
+import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:flutter/material.dart';
-import '../constants/app_colors.dart';
 
 class CustomTextField extends StatelessWidget {
   final String hintText;
@@ -27,16 +27,16 @@ class CustomTextField extends StatelessWidget {
       validator: validator,
       decoration: InputDecoration(
         hintText: hintText,
-        prefixIcon: Icon(prefixIcon, color: AppColors.grey),
+        prefixIcon: Icon(prefixIcon, color: AppTheme.textSecondaryColor),
         suffixIcon: suffixIcon,
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(12.0)),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
-          borderSide: const BorderSide(color: AppColors.grey),
+          borderSide: const BorderSide(color: AppTheme.borderColor),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(12.0),
-          borderSide: const BorderSide(color: AppColors.primary),
+          borderSide: const BorderSide(color: AppTheme.primaryColor),
         ),
       ),
     );

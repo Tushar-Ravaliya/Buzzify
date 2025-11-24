@@ -13,7 +13,6 @@ class ChatListScreen extends GetView<HomeController> {
   Widget build(BuildContext context) {
     final AuthController authController = Get.find<AuthController>();
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: _buildAppBar(context, authController),
       body: Column(
         children: [
@@ -52,7 +51,6 @@ class ChatListScreen extends GetView<HomeController> {
     AuthController authController,
   ) {
     return AppBar(
-      backgroundColor: Colors.white,
       elevation: 0,
       title: Obx(
         () => Text(controller.isSearching ? 'Searching...' : 'Messages '),
@@ -62,24 +60,30 @@ class ChatListScreen extends GetView<HomeController> {
         Obx(
           () => controller.isSearching
               ? IconButton(
-                  icon: const Icon(Icons.close, color: Colors.black),
+                  icon: Icon(
+                    Icons.close,
+                    color: Theme.of(context).iconTheme.color,
+                  ),
                   onPressed: () {
                     controller.clearSearch();
                   },
                 )
-              : _builsNotificatiobButton(),
+              : _builsNotificatiobButton(context),
         ),
       ],
     );
   }
 
-  Widget _builsNotificatiobButton() {
+  Widget _builsNotificatiobButton(BuildContext context) {
     return Obx(
       () => IconButton(
         onPressed: controller.openNotifications,
         icon: Stack(
           children: [
-            const Icon(Icons.notifications_none, color: Colors.black),
+            Icon(
+              Icons.notifications_none,
+              color: Theme.of(context).iconTheme.color,
+            ),
             if (controller.getUnreadCount() > 0)
               Positioned(
                 right: 0,
@@ -137,7 +141,7 @@ class ChatListScreen extends GetView<HomeController> {
 
   Widget _buildQuickFilters() {
     return Container(
-      color: Colors.white,
+      color: Theme.of(Get.context!).scaffoldBackgroundColor,
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
@@ -186,12 +190,18 @@ class ChatListScreen extends GetView<HomeController> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
         decoration: BoxDecoration(
-          color: isSelected ? AppTheme.primaryColor : Colors.grey[200],
+          color: isSelected
+              ? AppTheme.primaryColor
+              : Theme.of(Get.context!).colorScheme.surfaceVariant,
           borderRadius: BorderRadius.circular(20.0),
         ),
         child: Text(
           label,
-          style: TextStyle(color: isSelected ? Colors.white : Colors.black),
+          style: TextStyle(
+            color: isSelected
+                ? Colors.white
+                : Theme.of(Get.context!).colorScheme.onSurface,
+          ),
         ),
       ),
     );
@@ -199,7 +209,7 @@ class ChatListScreen extends GetView<HomeController> {
 
   Widget _buildSearchResults() {
     return Container(
-      color: Colors.white,
+      color: Theme.of(Get.context!).scaffoldBackgroundColor,
       padding: EdgeInsets.fromLTRB(16, 8, 18, 8),
       child: Row(
         children: [
@@ -282,49 +292,75 @@ class ChatListScreen extends GetView<HomeController> {
   }
 
   Widget _buildChatsList() {
-    return Container(
-      padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Obx(() {
-            String title = 'Recent Chats';
-            switch (controller.activeFilter) {
-              case 'Unread':
-                title = 'Unread Chats';
-                break;
-              case 'Recent':
-                title = 'Recent Chats';
-                break;
-              case 'Active':
-                title = 'Active Chats';
-                break;
-              default:
-                title = 'All Chats';
-            }
-            return Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: AppTheme.textPrimaryColor,
-              ),
-            );
-          }),
-          Row(
+    return Column(
+      children: [
+        Container(
+          padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              if (controller.activeFilter != 'All')
-                TextButton(
-                  onPressed: () => controller.setFilter('All'),
-                  child: Text(
-                    'Clear Filter',
-                    style: TextStyle(color: AppTheme.primaryColor),
+              Obx(() {
+                String title = 'Recent Chats';
+                switch (controller.activeFilter) {
+                  case 'Unread':
+                    title = 'Unread Chats';
+                    break;
+                  case 'Recent':
+                    title = 'Recent Chats';
+                    break;
+                  case 'Active':
+                    title = 'Active Chats';
+                    break;
+                  default:
+                    title = 'All Chats';
+                }
+                return Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(Get.context!).colorScheme.onSurface,
                   ),
-                ),
+                );
+              }),
+              Row(
+                children: [
+                  if (controller.activeFilter != 'All')
+                    TextButton(
+                      onPressed: () => controller.setFilter('All'),
+                      child: Text(
+                        'Clear Filter',
+                        style: TextStyle(color: AppTheme.primaryColor),
+                      ),
+                    ),
+                ],
+              ),
             ],
           ),
-        ],
-      ),
+        ),
+        Expanded(
+          child: ListView.separated(
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            itemCount: controller.chats.length,
+            separatorBuilder: (context, index) => SizedBox(height: 8),
+            itemBuilder: (context, index) {
+              final chat = controller.chats[index];
+              final otherUser = controller.getOtherUser(chat);
+              if (otherUser == null) {
+                return SizedBox.shrink();
+              }
+              return ChatListItem(
+                chat: chat,
+                otherUser: otherUser,
+                lastMessageTime: controller.formatLastMessageTime(
+                  chat.lastMessageTime,
+                ),
+                onTap: () => controller.openChat(chat),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 

@@ -4,7 +4,6 @@ import 'package:buzzify/routes/app_routes.dart';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 import '../../common/constants/app_icons.dart';
 import '../../common/widgets/custom_button.dart';
 import '../../common/widgets/custom_text_field.dart';
@@ -33,7 +32,6 @@ class _SigninScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -114,7 +112,7 @@ class _SigninScreenState extends State<SigninScreen> {
                               _obscurePassword
                                   ? AppIcons.visibility
                                   : AppIcons.visibilityOff,
-                              color: AppColors.grey,
+                              color: AppTheme.textSecondaryColor,
                             ),
                             onPressed: () {
                               setState(() {
@@ -138,7 +136,7 @@ class _SigninScreenState extends State<SigninScreen> {
                       },
                       child: const Text(
                         'Forgot Password?',
-                        style: TextStyle(color: AppColors.black),
+                        style: TextStyle(color: AppTheme.textPrimaryColor),
                       ),
                     ),
                   ),
@@ -172,7 +170,7 @@ class _SigninScreenState extends State<SigninScreen> {
                         padding: EdgeInsets.symmetric(horizontal: 8.0),
                         child: Text(
                           'OR',
-                          style: TextStyle(color: AppColors.grey),
+                          style: TextStyle(color: AppTheme.textSecondaryColor),
                         ),
                       ),
                       Expanded(child: Divider()),

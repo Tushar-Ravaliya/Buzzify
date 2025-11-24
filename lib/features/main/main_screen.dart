@@ -31,8 +31,8 @@ class MainScreen extends GetView<MainController> {
           onTap: controller.changeTabIndex,
           type: BottomNavigationBarType.fixed,
           selectedItemColor: AppTheme.primaryColor,
-          unselectedItemColor: AppTheme.textSecondaryColor,
-          backgroundColor: AppTheme.backgroundColor,
+          unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           elevation: 8,
           items: <BottomNavigationBarItem>[
             BottomNavigationBarItem(

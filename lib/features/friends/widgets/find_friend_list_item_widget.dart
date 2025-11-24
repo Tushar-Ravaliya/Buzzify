@@ -3,7 +3,6 @@ import 'package:buzzify/controller/user_list_controller.dart';
 import 'package:buzzify/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../common/constants/app_colors.dart';
 
 class FindFriendListItemWidget extends StatelessWidget {
   final UserModel user;
@@ -56,7 +55,7 @@ class FindFriendListItemWidget extends StatelessWidget {
                       user.email,
                       style: Theme.of(
                         context,
-                      ).textTheme.bodyMedium?.copyWith(color: AppColors.grey),
+                      ).textTheme.bodyMedium?.copyWith(color: AppTheme.textSecondaryColor),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ],

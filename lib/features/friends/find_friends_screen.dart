@@ -2,7 +2,6 @@ import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:buzzify/controller/user_list_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../common/constants/app_colors.dart';
 import 'widgets/find_friend_list_item_widget.dart';
 
 class FindFriendsScreen extends GetView<UsersListController> {
@@ -14,7 +13,7 @@ class FindFriendsScreen extends GetView<UsersListController> {
       appBar: AppBar(
         title: const Text(
           'Find Peoples',
-          style: TextStyle(color: AppColors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: AppTheme.textPrimaryColor, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -43,11 +42,11 @@ class FindFriendsScreen extends GetView<UsersListController> {
                 }),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  borderSide: BorderSide(color: AppColors.grey),
+                  borderSide: BorderSide(color: AppTheme.borderColor),
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                  borderSide: BorderSide(color: AppColors.grey),
+                  borderSide: BorderSide(color: AppTheme.borderColor),
                 ),
               ),
             ),

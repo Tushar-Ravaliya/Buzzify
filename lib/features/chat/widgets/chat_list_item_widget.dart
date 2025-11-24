@@ -75,7 +75,10 @@ class ChatListItem extends StatelessWidget {
                         decoration: BoxDecoration(
                           color: Colors.green,
                           shape: BoxShape.circle,
-                          border: Border.all(color: Colors.white, width: 2),
+                          border: Border.all(
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                            width: 2,
+                          ),
                         ),
                       ),
                     ),
@@ -102,7 +105,10 @@ class ChatListItem extends StatelessWidget {
                         if (lastMessageTime.isNotEmpty)
                           Text(
                             lastMessageTime,
-                            style: TextStyle(fontSize: 12, color: Colors.grey),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
                           ),
                       ],
                     ),
@@ -126,7 +132,7 @@ class ChatListItem extends StatelessWidget {
                                   chat.lastMessage ?? '',
                                   style: TextStyle(
                                     fontSize: 14,
-                                    color: Colors.grey[600],
+                                    color: Theme.of(context).colorScheme.onSurfaceVariant,
                                   ),
                                   overflow: TextOverflow.ellipsis,
                                   maxLines: 1,

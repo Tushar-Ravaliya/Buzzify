@@ -1,3 +1,4 @@
+import 'package:buzzify/controller/chat_controller.dart';
 import 'package:buzzify/controller/friend_request_controller.dart';
 import 'package:buzzify/controller/friends_controller.dart';
 import 'package:buzzify/controller/main_controller.dart';
@@ -6,6 +7,7 @@ import 'package:buzzify/controller/user_list_controller.dart';
 import 'package:buzzify/features/auth/forgot_password_screen.dart';
 import 'package:buzzify/features/auth/signin_screen.dart';
 import 'package:buzzify/features/auth/signup_screen.dart';
+import 'package:buzzify/features/chat/chat_detail_screen.dart';
 import 'package:buzzify/features/chat/chat_list_screen.dart';
 import 'package:buzzify/features/friends/find_friends_screen.dart';
 import 'package:buzzify/features/friends/friend_requests_screen.dart';
@@ -24,7 +26,6 @@ class AppPages {
     GetPage(name: AppRoutes.signin, page: () => const SigninScreen()),
     GetPage(name: AppRoutes.signup, page: () => const SignupScreen()),
 
-    // GetPage(name: AppRoutes.main, page: () => ),
     GetPage(
       name: AppRoutes.forgotPassword,
       page: () => const ForgotPasswordScreen(),
@@ -56,13 +57,13 @@ class AppPages {
         Get.put(() => ProfileController());
       }),
     ),
-    // GetPage(
-    //   name: AppRoutes.chat,
-    //   page: () => const ChatView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.put(ChatController());
-    //   }),
-    // ),
+    GetPage(
+      name: AppRoutes.chat,
+      page: () => ChatDetailScreen(),
+      binding: BindingsBuilder(() {
+        Get.put(ChatController());
+      }),
+    ),
     GetPage(
       name: AppRoutes.userList,
       page: () => FindFriendsScreen(),

@@ -1,6 +1,6 @@
+import 'package:buzzify/common/theme/app_theme.dart';
 import 'package:buzzify/features/friends/friend_requests_screen.dart';
 import 'package:flutter/material.dart';
-import '../../common/constants/app_colors.dart';
 
 class NotificationScreen extends StatelessWidget {
   const NotificationScreen({super.key});
@@ -11,10 +11,10 @@ class NotificationScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        // leading: const Icon(Icons.arrow_back, color: AppColors.black),
+        // leading: const Icon(Icons.arrow_back, color: AppTheme.textPrimaryColor),
         title: const Text(
           'Notification',
-          style: TextStyle(color: AppColors.black),
+          style: TextStyle(color: AppTheme.textPrimaryColor),
         ),
         centerTitle: true,
         actions: [
@@ -22,7 +22,7 @@ class NotificationScreen extends StatelessWidget {
             onPressed: () {},
             child: const Text(
               'Mark all read',
-              style: TextStyle(color: AppColors.primary, fontSize: 16),
+              style: TextStyle(color: AppTheme.primaryColor, fontSize: 16),
             ),
           ),
         ],
@@ -69,9 +69,9 @@ class _NotificationItem extends StatelessWidget {
       padding: const EdgeInsets.all(12.0),
       margin: const EdgeInsets.only(bottom: 12.0),
       decoration: BoxDecoration(
-        color: AppColors.white,
+        color: AppTheme.cardColor,
         borderRadius: BorderRadius.circular(12.0),
-        border: Border.all(color: AppColors.grey.withValues(alpha: 0.3)),
+        border: Border.all(color: AppTheme.borderColor.withValues(alpha: 0.3)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -79,7 +79,7 @@ class _NotificationItem extends StatelessWidget {
           // Icon
           CircleAvatar(
             radius: 24,
-            backgroundColor: Colors.pink.shade100,
+            backgroundColor: AppTheme.accentColor.withOpacity(0.2),
             child: const Icon(Icons.person_outline, color: Colors.pink),
           ),
           const SizedBox(width: 12),
@@ -96,11 +96,11 @@ class _NotificationItem extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                Text(subtitle, style: const TextStyle(color: AppColors.grey)),
+                Text(subtitle, style: const TextStyle(color: AppTheme.textSecondaryColor)),
                 const SizedBox(height: 4),
                 Text(
                   time,
-                  style: const TextStyle(color: AppColors.grey, fontSize: 12),
+                  style: const TextStyle(color: AppTheme.textSecondaryColor, fontSize: 12),
                 ),
               ],
             ),
@@ -108,7 +108,7 @@ class _NotificationItem extends StatelessWidget {
           // Dismiss button
           IconButton(
             onPressed: () {},
-            icon: const Icon(Icons.close, color: AppColors.grey),
+            icon: const Icon(Icons.close, color: AppTheme.textSecondaryColor),
           ),
         ],
       ),
