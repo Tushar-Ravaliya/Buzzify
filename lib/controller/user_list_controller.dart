@@ -6,7 +6,6 @@ import 'package:buzzify/routes/app_routes.dart';
 import 'package:buzzify/service/firestore_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:uuid/uuid.dart';
 
 enum UserRelationshipStatus {
@@ -18,7 +17,7 @@ enum UserRelationshipStatus {
 }
 
 class UsersListController extends GetxController {
-  final FirestoreService firestoreService = FirestoreService();
+  final FirestoreService _firestoreService = FirestoreService();
   final AuthController _authController = Get.find<AuthController>();
   final Uuid _uuid = Uuid();
 
@@ -53,7 +52,7 @@ class UsersListController extends GetxController {
   }
 
   void _loadUsers() async {
-    _users.bindStream(firestoreService.getAllUsersStream());
+    _users.bindStream(_firestoreService.getAllUsersStream());
     ever(_users, (List<UserModel> userList) {
       final currentUserId = _authController.user?.uid;
       final otherUsers = userList
@@ -73,14 +72,16 @@ class UsersListController extends GetxController {
 
     if (currentUserId != null) {
       _sentRequests.bindStream(
-        firestoreService.getSentFriendRequestsStream(currentUserId),
+        _firestoreService.getSentFriendRequestsStream(currentUserId),
       );
 
       _receivedRequests.bindStream(
-        firestoreService.getFriendRequestsStream(currentUserId),
+        _firestoreService.getFriendRequestsStream(currentUserId),
       );
 
-      _friendships.bindStream(firestoreService.getFriendsStream(currentUserId));
+      _friendships.bindStream(
+        _firestoreService.getFriendsStream(currentUserId),
+      );
 
       ever(_sentRequests, (_) => _updateAllRelationshipsStatus());
       ever(_receivedRequests, (_) => _updateAllRelationshipsStatus());
@@ -116,17 +117,20 @@ class UsersListController extends GetxController {
         return UserRelationshipStatus.friends;
       }
     }
-    final sentRequests = _sentRequests.firstWhereOrNull(
+    final sentRequest = _sentRequests.firstWhereOrNull(
       (req) =>
           req.receiverId == userId && req.status == FriendRequestStatus.pending,
     );
-    if (sentRequests != null) {
+    if (sentRequest != null) {
       return UserRelationshipStatus.friendRequestSent;
     }
     final receivedRequests = _receivedRequests.firstWhereOrNull(
       (req) =>
           req.senderId == userId && req.status == FriendRequestStatus.pending,
     );
+    if (receivedRequests != null) {
+      return UserRelationshipStatus.friendRequestReceived;
+    }
     return UserRelationshipStatus.none;
   }
 
@@ -169,10 +173,9 @@ class UsersListController extends GetxController {
 
         _userRelationships[user.id] = UserRelationshipStatus.friendRequestSent;
 
-        await firestoreService.sendFriendRequest(request);
+        await _firestoreService.sendFriendRequest(request);
         Get.snackbar('Success', "Friend Request Sent To ${user.displayName}");
       }
-      Get.snackbar('Success', "Friend Request Sent To ${user.displayName}");
     } catch (e) {
       _userRelationships[user.id] = UserRelationshipStatus.none;
       _error.value = e.toString();
@@ -195,7 +198,7 @@ class UsersListController extends GetxController {
         );
         if (request != null) {
           _userRelationships[user.id] = UserRelationshipStatus.none;
-          await firestoreService.cancelFriendRequest(request.id);
+          await _firestoreService.cancelFriendRequest(request.id);
           Get.snackbar('Success', "Friend Request Cancelled");
         }
       }
@@ -220,7 +223,7 @@ class UsersListController extends GetxController {
         );
         if (request != null) {
           _userRelationships[user.id] = UserRelationshipStatus.friends;
-          await firestoreService.respondToFriendRequest(
+          await _firestoreService.respondToFriendRequest(
             request.id,
             FriendRequestStatus.accepted,
           );
@@ -249,7 +252,7 @@ class UsersListController extends GetxController {
         );
         if (request != null) {
           _userRelationships[user.id] = UserRelationshipStatus.none;
-          await firestoreService.respondToFriendRequest(
+          await _firestoreService.respondToFriendRequest(
             request.id,
             FriendRequestStatus.declined,
           );
@@ -278,7 +281,7 @@ class UsersListController extends GetxController {
           Get.snackbar('Info', "You can only chat with friends.");
           return;
         }
-        final chatId = await firestoreService.createOrGetChat(
+        final chatId = await _firestoreService.createOrGetChat(
           currentUserId,
           user.id,
         );
@@ -385,7 +388,7 @@ class UsersListController extends GetxController {
     }
   }
 
-  void _clearError() {
+  void clearError() {
     _error.value = '';
   }
 }
