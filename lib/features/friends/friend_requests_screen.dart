@@ -1,251 +1,220 @@
+import 'package:buzzify/common/theme/app_theme.dart';
+import 'package:buzzify/controller/friend_request_controller.dart';
+import 'package:buzzify/features/friends/widgets/friend_request_item.dart';
 import 'package:flutter/material.dart';
-import '../../common/constants/app_colors.dart';
+import 'package:get/get.dart';
 
-// Enum to manage which tab is selected
-enum RequestTab { received, sent }
-
-class FriendRequestsScreen extends StatefulWidget {
+class FriendRequestsScreen extends GetView<FriendRequestsController> {
   const FriendRequestsScreen({super.key});
-
-  @override
-  State<FriendRequestsScreen> createState() => _FriendRequestsScreenState();
-}
-
-class _FriendRequestsScreenState extends State<FriendRequestsScreen> {
-  // State variable to track the selected tab
-  RequestTab _selectedTab = RequestTab.received;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        // leading: const Icon(Icons.arrow_back, color: AppColors.black),
-        title: const Text(
-          'Friend Requests',
-          style: TextStyle(color: AppColors.black),
+        title: const Text('Friend Requests'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () => Get.back(),
         ),
-        centerTitle: true,
       ),
       body: Column(
         children: [
-          // Tab Selector
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16.0,
-              vertical: 8.0,
+          Container(
+            margin: const EdgeInsets.all(16.0),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(12.0),
             ),
-            child: Row(
-              children: [
-                _buildTabButton(
-                  context,
-                  title: 'Received (1)',
-                  icon: Icons.chat_bubble_outline,
-                  isSelected: _selectedTab == RequestTab.received,
-                  onTap: () =>
-                      setState(() => _selectedTab = RequestTab.received),
-                ),
-                const SizedBox(width: 8),
-                _buildTabButton(
-                  context,
-                  title: 'Sent (0)',
-                  icon: Icons.send_outlined,
-                  isSelected: _selectedTab == RequestTab.sent,
-                  onTap: () => setState(() => _selectedTab = RequestTab.sent),
-                ),
-              ],
-            ),
-          ),
-
-          // Conditional content based on selected tab
-          Expanded(
-            child: _selectedTab == RequestTab.received
-                ? _buildReceivedList()
-                : _buildSentEmptyState(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  // Helper method to build a tab button
-  Widget _buildTabButton(
-    BuildContext context, {
-    required String title,
-    required IconData icon,
-    required bool isSelected,
-    required VoidCallback onTap,
-  }) {
-    return Expanded(
-      child: isSelected
-          ? ElevatedButton.icon(
-              onPressed: onTap,
-              icon: Icon(icon, color: AppColors.white),
-              label: Text(
-                title,
-                style: const TextStyle(color: AppColors.white),
-              ),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            )
-          : TextButton.icon(
-              onPressed: onTap,
-              icon: Icon(icon, color: AppColors.grey),
-              label: Text(title, style: const TextStyle(color: AppColors.grey)),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-            ),
-    );
-  }
-
-  // Widget for the "Received" tab's content
-  Widget _buildReceivedList() {
-    return ListView(
-      padding: const EdgeInsets.all(16.0),
-      children: const [_FriendRequestItem()],
-    );
-  }
-
-  // Widget for the "Sent" tab's empty state
-  Widget _buildSentEmptyState() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(24),
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: AppColors.primary.withValues(alpha: 0.1),
-          ),
-          child: const Icon(
-            Icons.send_outlined,
-            color: AppColors.primary,
-            size: 60,
-          ),
-        ),
-        const SizedBox(height: 24),
-        const Text(
-          'No Send Requests',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 8),
-        const Text(
-          'Friend requests you send will appear here',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: AppColors.grey, fontSize: 16),
-        ),
-      ],
-    );
-  }
-}
-
-// Reusable widget for a single friend request item
-class _FriendRequestItem extends StatelessWidget {
-  const _FriendRequestItem();
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16.0),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(16.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
-            spreadRadius: 2,
-            blurRadius: 10,
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              const CircleAvatar(
-                radius: 24,
-                backgroundColor: AppColors.primary,
-                child: Text(
-                  'D',
-                  style: TextStyle(color: AppColors.white, fontSize: 20),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Dear Programmer',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+            child: Obx(
+              () => Row(
+                children: [
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => controller.changeTab(0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        decoration: BoxDecoration(
+                          color: controller.selectedTabIndex == 0
+                              ? AppTheme.primaryColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.inbox,
+                              color: controller.selectedTabIndex == 0
+                                  ? Colors.white
+                                  : AppTheme.textSecondaryColor,
+                            ),
+                            const SizedBox(width: 8.0),
+                            Text(
+                              'Received (${controller.receivedRequests.length})',
+                              style: TextStyle(
+                                color: controller.selectedTabIndex == 0
+                                    ? Colors.white
+                                    : AppTheme.textSecondaryColor,
+                                fontWeight: controller.selectedTabIndex == 0
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
-                    Text(
-                      'dearprogrammerofficial@gmail.com',
-                      style: const TextStyle(color: AppColors.grey),
+                  ),
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () => controller.changeTab(1),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(vertical: 12.0),
+                        decoration: BoxDecoration(
+                          color: controller.selectedTabIndex == 1
+                              ? AppTheme.primaryColor
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.send,
+                              color: controller.selectedTabIndex == 1
+                                  ? Colors.white
+                                  : AppTheme.textSecondaryColor,
+                            ),
+                            const SizedBox(width: 8.0),
+                            Text(
+                              'Sent (${controller.sentRequests.length})',
+                              style: TextStyle(
+                                color: controller.selectedTabIndex == 1
+                                    ? Colors.white
+                                    : AppTheme.textSecondaryColor,
+                                fontWeight: controller.selectedTabIndex == 1
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              const Text(
-                'Just now',
-                style: TextStyle(color: AppColors.grey, fontSize: 12),
-              ),
-            ],
+            ),
           ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              Expanded(
-                child: OutlinedButton.icon(
-                  icon: const Icon(Icons.close),
-                  label: const Text('Decline'),
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.red,
-                    side: const BorderSide(color: Colors.red),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.check, color: AppColors.white),
-                  label: const Text(
-                    'Accept',
-                    style: TextStyle(color: AppColors.white),
-                  ),
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.green,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                  ),
-                ),
-              ),
-            ],
+          Expanded(
+            child: Obx(() {
+              return IndexedStack(
+                index: controller.selectedTabIndex,
+                children: [
+                  _buildReceivedRequestsTab(),
+                  _buildSentRequestsTab(),
+                ],
+              );
+            }),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildReceivedRequestsTab() {
+    return Obx(() {
+      if (controller.receivedRequests.isEmpty) {
+        return _buildEmptyState(
+          icon: Icons.inbox_outlined,
+          title: 'No Received Requests',
+          message: 'You have no received friend requests at the moment.',
+        );
+      }
+      return ListView.separated(
+        padding: const EdgeInsets.all(16.0),
+        itemCount: controller.receivedRequests.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 12.0),
+        itemBuilder: (contex, index) {
+          final request = controller.receivedRequests[index];
+          final sender = controller.getUser(request.senderId);
+          if (sender == null) {
+            return const SizedBox.shrink();
+          }
+          return FriendRequestItem(
+            request: request,
+            user: sender,
+            timeText: controller.getRequestTimeText(request.createdAt),
+            isReceived: true,
+            onAccept: () => controller.acceptRequest(request),
+            onDecline: () => controller.declineRequest(request),
+          );
+        },
+      );
+    });
+  }
+
+  Widget _buildSentRequestsTab() {
+    return Obx(() {
+      if (controller.sentRequests.isEmpty) {
+        return _buildEmptyState(
+          icon: Icons.send_outlined,
+          title: 'No Sent Requests',
+          message: 'You have not sent any friend requests yet.',
+        );
+      }
+      return ListView.separated(
+        padding: const EdgeInsets.all(16.0),
+        itemCount: controller.sentRequests.length,
+        separatorBuilder: (context, index) => const SizedBox(height: 12.0),
+        itemBuilder: (context, index) {
+          final request = controller.sentRequests[index];
+          final recipient = controller.getUser(request.senderId);
+          if (recipient == null) {
+            return const SizedBox.shrink();
+          }
+          return FriendRequestItem(
+            request: request,
+            user: recipient,
+            timeText: controller.getRequestTimeText(request.createdAt),
+            isReceived: false,
+            statusText: controller.getStatusText(request.status),
+            statusColor: controller.getStatusColor(request.status),
+          );
+        },
+      );
+    });
+  }
+
+  Widget _buildEmptyState({
+    required IconData icon,
+    required String title,
+    required String message,
+  }) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(32.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 80, color: Colors.grey[400]),
+            const SizedBox(height: 16.0),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 24.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
+            ),
+            const SizedBox(height: 8.0),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16.0, color: Colors.grey),
+            ),
+          ],
+        ),
       ),
     );
   }
