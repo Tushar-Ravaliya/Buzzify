@@ -1,3 +1,5 @@
+import 'package:buzzify/controller/friends_controller.dart';
+import 'package:buzzify/controller/home_controller.dart';
 import 'package:buzzify/controller/profile_controller.dart';
 import 'package:buzzify/controller/user_list_controller.dart';
 import 'package:flutter/widgets.dart';
@@ -12,8 +14,8 @@ class MainController extends GetxController {
   void onInit() {
     super.onInit();
 
-    // Get.lazyPut(() => MainController());
-    // Get.lazyPut(() => FriendsController());
+    Get.lazyPut(() => HomeController());
+    Get.lazyPut(() => FriendsController());
     Get.lazyPut(() => UsersListController());
     Get.lazyPut(() => ProfileController());
   }
@@ -39,9 +41,9 @@ class MainController extends GetxController {
 
   int getUnreadCount() {
     try {
-      // final homeController = Get.find<HomeController>();
-      // return homeController.getUnreadCount();
-      return 2;
+      final homeController = Get.find<HomeController>();
+      return homeController.getUnreadCount();
+     
     } catch (e) {
       return 0;
     }
@@ -49,9 +51,9 @@ class MainController extends GetxController {
 
   int getNotificationCount() {
     try {
-      // final homeController = Get.find<HomeController>();
-      // return homeController.getNotificationCount();
-      return 5;
+      final homeController = Get.find<HomeController>();
+      return homeController.getUnreadNotificationsCount();
+      
     } catch (e) {
       return 0;
     }
