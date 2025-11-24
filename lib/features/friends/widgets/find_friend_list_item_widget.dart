@@ -3,7 +3,6 @@ import 'package:buzzify/controller/user_list_controller.dart';
 import 'package:buzzify/model/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import '../../../common/constants/app_colors.dart';
 
 class FindFriendListItemWidget extends StatelessWidget {
@@ -21,8 +20,7 @@ class FindFriendListItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final UserRelationshipStatus status = controller
-          .getUserRelationshipStatus(user.id);
+      final status = controller.getUserRelationshipStatus(user.id);
 
       if (status == UserRelationshipStatus.friends) {
         return SizedBox.shrink();
@@ -67,7 +65,8 @@ class FindFriendListItemWidget extends StatelessWidget {
               Column(
                 children: [
                   _buildActionButton(status),
-                  if (status == UserRelationshipStatus.friendRequestSent) ...[
+                  if (status ==
+                      UserRelationshipStatus.friendRequestReceived) ...[
                     SizedBox(height: 8),
                     OutlinedButton.icon(
                       onPressed: () => controller.declineFriendRequest(user),
