@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 class MainScreen extends GetView<MainController> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
+  static  List<Widget> widgetOptions = <Widget>[
     ChatListScreen(),
     FriendsListScreen(),
     FindFriendsScreen(),
@@ -23,7 +23,7 @@ class MainScreen extends GetView<MainController> {
       body: PageView(
         controller: controller.pageController,
         onPageChanged: controller.onPageChanged,
-        children: _widgetOptions,
+        children: widgetOptions,
       ),
       bottomNavigationBar: Obx(
         () => BottomNavigationBar(

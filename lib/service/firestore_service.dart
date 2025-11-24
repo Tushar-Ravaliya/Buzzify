@@ -90,7 +90,7 @@ class FirestoreService {
   Future<void> sendFriendRequest(FriendRequestModel request) async {
     try {
       await _firestore
-          .collection('friend Requests')
+          .collection('friendRequests')
           .doc(request.id)
           .set(request.toMap());
       String notificationId =
@@ -140,13 +140,13 @@ class FirestoreService {
     FriendRequestStatus status,
   ) async {
     try {
-      await _firestore.collection('friend Requests').doc(requestId).update({
+      await _firestore.collection('friendRequests').doc(requestId).update({
         'status': status.name,
         'respondedAt': DateTime.now().millisecondsSinceEpoch,
       });
 
       DocumentSnapshot requestDoc = await _firestore
-          .collection('friend Requests')
+          .collection('friendRequests')
           .doc(requestId)
           .get();
       if (requestDoc.exists) {

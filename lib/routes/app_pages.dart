@@ -1,9 +1,17 @@
+import 'package:buzzify/controller/friend_request_controller.dart';
+import 'package:buzzify/controller/friends_controller.dart';
 import 'package:buzzify/controller/main_controller.dart';
 import 'package:buzzify/controller/profile_controller.dart';
+import 'package:buzzify/controller/user_list_controller.dart';
 import 'package:buzzify/features/auth/forgot_password_screen.dart';
 import 'package:buzzify/features/auth/signin_screen.dart';
 import 'package:buzzify/features/auth/signup_screen.dart';
+import 'package:buzzify/features/chat/chat_list_screen.dart';
+import 'package:buzzify/features/friends/find_friends_screen.dart';
+import 'package:buzzify/features/friends/friend_requests_screen.dart';
+import 'package:buzzify/features/friends/friends_list_screen.dart';
 import 'package:buzzify/features/main/main_screen.dart';
+import 'package:buzzify/features/notification/notification_screen.dart';
 import 'package:buzzify/features/profile/change_password_screen.dart';
 import 'package:buzzify/features/profile/profile_screen.dart';
 import 'package:buzzify/routes/app_routes.dart';
@@ -33,15 +41,14 @@ class AppPages {
         Get.put(MainController());
       }),
     ),
-    // binding: BindingsBuilder(() {
-    //   Get.put(RegisterController());
-    // }),
-    // ),
-    // GetPage(name: AppRoutes.home, page: () => const HomePage(),
-    // binding: BindingsBuilder(() {
-    //   Get.put(HomeController());
-    // }),
-    // ),
+    GetPage(
+      name: AppRoutes.home,
+      page: () => ChatListScreen(),
+
+      binding: BindingsBuilder(() {
+        Get.put(MainController());
+      }),
+    ),
     GetPage(
       name: AppRoutes.profile,
       page: () => ProfileScreen(),
@@ -56,33 +63,33 @@ class AppPages {
     //     Get.put(ChatController());
     //   }),
     // ),
-    // GetPage(
-    //   name: AppRoutes.userList,
-    //   page: () => const UserListView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.put(UserListController());
-    //   }),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.friends,
-    //   page: () => const FriendsView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.put(FriendsController());
-    //   }),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.friendRequests,
-    //   page: () => const FriendRequestsView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.put(FriendRequestsController());
-    //   }),
-    // ),
-    // GetPage(
-    //   name: AppRoutes.notifications,
-    //   page: () => const NotificationsView(),
-    //   binding: BindingsBuilder(() {
-    //     Get.put(NotificationController());
-    //   }),
-    // ),
+    GetPage(
+      name: AppRoutes.userList,
+      page: () => FindFriendsScreen(),
+      binding: BindingsBuilder(() {
+        Get.put(UsersListController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.friends,
+      page: () => const FriendsListScreen(),
+      binding: BindingsBuilder(() {
+        Get.put(FriendsController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.friendRequests,
+      page: () => const FriendRequestsScreen(),
+      binding: BindingsBuilder(() {
+        Get.put(FriendRequestsController());
+      }),
+    ),
+    GetPage(
+      name: AppRoutes.notifications,
+      page: () => const NotificationScreen(),
+      // binding: BindingsBuilder(() {
+      //   Get.put(NotificationController());
+      // }),
+    ),
   ];
 }
